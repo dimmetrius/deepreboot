@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "290828295877",
+    "firebase_url": "https://deepreboot.firebaseio.com",
+    "project_id": "deepreboot",
+    "storage_bucket": "deepreboot.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290828295877:android:82b7020694a3077fdf9aac",
+        "android_client_info": {
+          "package_name": "com.deepreboot.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290828295877-cietp8lpj8phhd1h775dakh290k0cca9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deepreboot.app",
+            "certificate_hash": "2584ece5003209db7d6b56f15faf003d618acc57"
+          }
+        },
+        {
+          "client_id": "290828295877-1ilcsnginddkep2ckm0i3nchdvatfipe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA98GP0mVdmvhQKfxApoGZOg0DI8pdEFqs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290828295877-1ilcsnginddkep2ckm0i3nchdvatfipe.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "290828295877-3phj25m3impmj25mgm9tg2enuj55al3s.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.deepreboot.app",
+                "app_store_id": "1515610184"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
