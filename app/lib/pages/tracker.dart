@@ -40,13 +40,15 @@ class Meal {
   User user;
 }
 
-class Tracker extends StatefulWidget {
+class TrackerPage extends StatefulWidget {
   final String title = 'FOOD.REBOOT';
   @override
-  State<StatefulWidget> createState() => TrackerState();
+  State<StatefulWidget> createState() => TrackerPageState();
 }
 
-class TrackerState extends State<Tracker> {
+final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+class TrackerPageState extends State<TrackerPage> {
   DateTime _dateTime = DateTime.now();
   static Product grecha = Product(id: 'id', name: 'Гречка');
   List<Meal> meals = [
@@ -58,7 +60,8 @@ class TrackerState extends State<Tracker> {
   Widget build(BuildContext context) {
     print(_dateTime);
     return Scaffold(
-      drawer: AppDrawer('/'),
+      key: scaffoldKey,
+      drawer: AppDrawer('/tracker'),
       appBar: AppBar(
           title: new Theme(
         data: Theme.of(context),
@@ -66,7 +69,10 @@ class TrackerState extends State<Tracker> {
           builder: (context) => GestureDetector(
             child: Column(children: <Widget>[
               Text('Diary'),
-              Text(DateFormat('dd.MM.yyyy').format(_dateTime), style: TextStyle(fontSize: 20.0),),
+              Text(
+                DateFormat('dd.MM.yyyy').format(_dateTime),
+                style: TextStyle(fontSize: 20.0),
+              ),
             ]),
             onTap: () => showDatePicker(
                     context: context,
@@ -97,7 +103,7 @@ class TrackerState extends State<Tracker> {
                       child: Icon(Icons.label),
                     ),
                   ),
-                  trailing: Text(meals[index].weight.toInt().toString()),
+                  trailing: Text(meals[index].weight.toInt().toString() + 'g'),
                   title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,6 +113,19 @@ class TrackerState extends State<Tracker> {
                         Text('100 ккал')
                       ]),
                 )),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet<String>(
+              context: context,
+              builder: (BuildContext context) => Container(
+                    height: 200.0,
+                    child: Text('bottom'),
+                    color: Colors.red,
+                  ));
+        },
+        tooltip: 'Refresh',
+        child: Icon(Icons.add),
       ),
     );
   }
