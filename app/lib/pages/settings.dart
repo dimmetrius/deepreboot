@@ -41,10 +41,45 @@ class SettingsPageState extends State<SettingsPage> {
         ],
       ),
       body: Builder(builder: (BuildContext context) {
-        return ListView(
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Text('Settings'),
+        return CustomScrollView(
+          slivers: <Widget>[
+            ///First sliver is the App Bar
+            SliverAppBar(
+              leading: Container(width: 0.0),
+              // Allows the user to reveal the app bar if they begin scrolling back
+              // up the list of items.
+              floating: true,
+              // Display a placeholder widget to visualize the shrinking size.
+              flexibleSpace: Container(
+                child: Container(
+                  alignment: FractionalOffset.center,
+                  child: Container(
+                    width: 20.0,
+                    height: 20.0,
+                    color: Colors.red,
+                  ),
+                ),
+              ),
+              // Make the initial height of the SliverAppBar larger than normal.
+              expandedHeight: 100,
+            ),
+            SliverList(
+              ///Use SliverChildListDelegate and provide a list
+              ///of widgets if the count is limited
+              ///
+              ///Lazy building of list
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  /// To convert this infinite list to a list with "n" no of items,
+                  /// uncomment the following line:
+                  /// if (index > n) return null;
+                  return Text("Sliver List item: $index");
+                },
+
+                /// Set childCount to limit no.of items
+                /// childCount: 100,
+              ),
+            )
           ],
         );
       }),
