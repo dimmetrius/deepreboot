@@ -1,44 +1,7 @@
 import 'package:app/components/app_drawer.dart';
+import 'package:app/model/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
-enum WeightUnit { G }
-
-class User {
-  String id;
-}
-
-class Product {
-  Product({this.id, this.name});
-  String id;
-  String name;
-  /*
-  id: String!
-  manufacturer: Manufacturer
-  kkal: double
-  protein: double
-  fat: double
-  carb: double
-  receipt: Receipt
-  creator: User
-  */
-}
-
-class Meal {
-  Meal(
-      {this.id,
-      this.time,
-      this.product,
-      this.weight,
-      this.weigthUnit = WeightUnit.G,
-      this.user});
-  String id;
-  DateTime time;
-  Product product;
-  double weight;
-  WeightUnit weigthUnit;
-  User user;
-}
 
 class TrackerPage extends StatefulWidget {
   final String title = 'FOOD.REBOOT';
@@ -50,12 +13,28 @@ final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
 class TrackerPageState extends State<TrackerPage> {
   DateTime _dateTime = DateTime.now();
-  static Product grecha = Product(id: 'id', name: 'Гречка');
-  List<Meal> meals = [
-    Meal(id: '0', time: DateTime.now(), product: grecha, weight: 100.0),
-    Meal(id: '1', time: DateTime.now(), product: grecha, weight: 200.0),
-    Meal(id: '2', time: DateTime.now(), product: grecha, weight: 300.0),
-  ];
+  List<JsonMeal> mymeals = [];
+  List<int> pfc = [0,0,0];
+
+  @override
+
+  void initState() {
+    initJson();
+    super.initState();
+  }
+
+  initJson() async {
+     await loadJson(context);
+     getMeals();
+  }
+
+  getMeals() {
+    setState((){
+      mymeals = meals.where((el) => DateFormat('dd.MM.yyyy').format(_dateTime) == el.date).toList();
+      pfc = [0,0,0];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     print(_dateTime);
@@ -84,6 +63,7 @@ class TrackerPageState extends State<TrackerPage> {
                         {
                           setState(() {
                             _dateTime = value;
+                            getMeals();
                           })
                         }
                     }),
@@ -91,29 +71,108 @@ class TrackerPageState extends State<TrackerPage> {
         ),
       )),
       body: Container(
-        child: ListView.separated(
-            separatorBuilder: (context, index) => Divider(
-                  color: Colors.black54,
+          child: CustomScrollView(
+        slivers: <Widget>[
+          ///First sliver is the App Bar
+          SliverAppBar(
+            leading: Container(width: 0.0),
+            // Allows the user to reveal the app bar if they begin scrolling back
+            // up the list of items.
+            floating: true,
+            // Display a placeholder widget to visualize the shrinking size.
+            flexibleSpace: Container(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                alignment: FractionalOffset.center,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        CircleAvatar(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('100%'),
+                              Text('Prots', style: TextStyle(fontSize: 10.0))
+                            ],
+                          ),
+                          radius: 30.0,
+                          backgroundColor: Colors.red[300],
+                        ),
+                        CircleAvatar(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('100%'),
+                              Text('Fats', style: TextStyle(fontSize: 10.0))
+                            ],
+                          ),
+                          radius: 30.0,
+                          backgroundColor: Colors.green,
+                        ),
+                        CircleAvatar(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('100%'),
+                              Text('Carbs', style: TextStyle(fontSize: 10.0))
+                            ],
+                          ),
+                          radius: 30.0,
+                          backgroundColor: Colors.orange,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    Text(
+                      'SUM KKAL',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  ],
                 ),
-            itemCount: meals.length,
-            itemBuilder: (context, index) => ListTile(
+              ),
+            ),
+            // Make the initial height of the SliverAppBar larger than normal.
+            expandedHeight: 100,
+          ),
+          SliverList(
+            ///Use SliverChildListDelegate and provide a list
+            ///of widgets if the count is limited
+            ///
+            ///Lazy building of list
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                /// To convert this infinite list to a list with "n" no of items,
+                /// uncomment the following line:
+                /// if (index > n) return null;
+                JsonMeal meal = mymeals[index];
+                return ListTile(
                   leading: Expanded(
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: Icon(Icons.label),
                     ),
                   ),
-                  trailing: Text(meals[index].weight.toInt().toString() + 'g'),
+                  trailing: Text(meal.m + 'g'),
                   title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(meals[index].product.name),
-                        Text('Б: 33, Ж: 33, У: 44'),
-                        Text('100 ккал')
+                        Text(meal.product),
+                        Text('Б: '+meal.pg+', Ж: '+meal.fg+', У: ' + meal.cg),
+                        Text(meal.kkal + ' kkal')
                       ]),
-                )),
-      ),
+                );
+              },
+
+              /// Set childCount to limit no.of items
+              childCount: mymeals.length,
+            ),
+          )
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet<String>(

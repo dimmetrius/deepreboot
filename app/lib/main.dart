@@ -1,3 +1,4 @@
+import 'package:app/pages/login.dart';
 import 'package:app/pages/settings.dart';
 import 'package:app/pages/tracker.dart';
 import 'package:app/utils/AppTheme.dart';
@@ -12,10 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'DEEP.REBOOT',
       theme: themeData,
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => TrackerPage(),
+        '/': (BuildContext context) => LoginPage(),
         '/tracker': (BuildContext context) => TrackerPage(),
         '/settings': (BuildContext context) => SettingsPage(),
       },

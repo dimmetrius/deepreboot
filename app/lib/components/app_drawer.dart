@@ -53,7 +53,7 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.book, color: Colors.black),
                 title: Text('Book'),
-                onTap: () => nav(context, '/'),
+                onTap: () => nav(context, '/book'),
               ),
               ListTile(
                 leading: Icon(Icons.track_changes, color: Colors.black),
@@ -63,7 +63,7 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.person, color: Colors.black),
                 title: Text('Profile'),
-                onTap: () => nav(context, '/'),
+                onTap: () => nav(context, '/profile'),
               ),
               ListTile(
                 leading: Icon(Icons.settings, color: Colors.black),
@@ -73,7 +73,7 @@ class AppDrawer extends StatelessWidget {
               ListTile(
                 leading: Icon(Icons.format_list_numbered, color: Colors.black),
                 title: Text('Sizes'),
-                onTap: () => nav(context, '/'),
+                onTap: () => nav(context, '/sizes'),
               )
             ],
           )
