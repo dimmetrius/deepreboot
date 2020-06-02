@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:app/utils/AppTheme.dart';
 
 
-class LoginPage extends StatefulWidget {
+class LoginPagePhone extends StatefulWidget {
   final String title = 'Login';
   @override
-  State<StatefulWidget> createState() => LoginPageState();
+  State<StatefulWidget> createState() => LoginPagePhoneState();
 }
 
-class LoginPageState extends State<LoginPage> {
+class LoginPagePhoneState extends State<LoginPagePhone> {
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _smsController = TextEditingController();
 
   _signInWithPhoneNumber() {
-    Navigator.of(context).pushReplacementNamed('/tracker');
+    Navigator.of(context).pushReplacementNamed('/code');
   }
 
   @override
@@ -44,20 +43,6 @@ class LoginPageState extends State<LoginPage> {
                     }
                     return null;
                   },
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  controller: _smsController,
-                  decoration: const InputDecoration(labelText: 'code'),
-                  validator: (String value) {
-                    if (value.isEmpty) {
-                      return 'code';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(
-                  height: 20.0,
                 ),
                 RaisedButton(
                   color: greenPrimary,

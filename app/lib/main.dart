@@ -1,4 +1,5 @@
-import 'package:app/pages/login.dart';
+import 'package:app/pages/login_code.dart';
+import 'package:app/pages/login_phone.dart';
 import 'package:app/pages/settings.dart';
 import 'package:app/pages/tracker.dart';
 import 'package:app/utils/AppTheme.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       title: 'DEEP.REBOOT',
       theme: themeData,
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => LoginPage(),
+        '/': (BuildContext context) => LoginPagePhone(),
+        '/code': (BuildContext context) => LoginPageCode(),
         '/tracker': (BuildContext context) => TrackerPage(),
         '/settings': (BuildContext context) => SettingsPage(),
       },
