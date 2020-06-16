@@ -48,6 +48,6 @@ class SettingsPageState extends State<SettingsPage> {
 
   // Example code for sign out.
   void _signOut() {
-     Navigator.of(context).pushReplacementNamed('/');
+    Navigator.of(context).pushReplacementNamed('/');
   }
 }

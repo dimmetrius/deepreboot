@@ -1,28 +1,186 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 
-enum WeightUnit { G }
-
-class User {
-  String id;
+enum WeightUnit { G, KG, LBS }
+enum RecType {User, Manufacturer, Product, ReceiptEntry, Receipt, Meal}
+abstract class OrmRecord{
+  OrmRecord.fromMap(Map snapshot);
+  Map toMap();
 }
 
-class Product {
-  Product({this.id, this.name});
+class User implements OrmRecord{
+  String id;
+  String phone;
+  User.fromMap(Map snapshot){
+    id = snapshot['id'] ?? '';
+    phone = snapshot['phone'] ?? '';
+  }
+  Map toMap(){
+    return {
+      "id": id,
+      "phone": phone 
+    };
+  }
+}
+
+class Manufacturer implements OrmRecord{
   String id;
   String name;
-  /*
-  id: String!
-  manufacturer: Manufacturer
-  kkal: double
-  protein: double
-  fat: double
-  carb: double
-  receipt: Receipt
-  creator: User
-  */
+  Manufacturer({this.id, this.name});
+  Manufacturer.fromMap(Map snapshot){
+    id = snapshot['id'] ?? '';
+    name = snapshot['name'] ?? '';
+  }
+  Map toMap(){
+    return {
+      "id": id,
+      "name": name 
+    };
+  }
 }
+
+class Product implements OrmRecord {
+  Product({this.id, this.name, this.manufacturerID, this.kkal, this.protein, this.fat, this.carb, this.sugar, this.fibers, this.receiptID, this.creatorID});
+  Product.fromMap(Map snapshot) {
+    id = snapshot['id'] ?? '';
+    name = snapshot['name'] ?? '';
+    manufacturerID = snapshot['manufacturerID'] ?? '';
+    kkal = snapshot['kkal'] ?? 0;
+    protein = snapshot['protein'] ?? 0;
+    fat = snapshot['fat'] ?? 0;
+    carb = snapshot['carb'] ?? 0;
+    sugar = snapshot['sugar'] ?? 0;
+    fibers = snapshot['fibers'] ?? 0;
+    receiptID = snapshot['receiptID'] ?? '';
+    creatorID = snapshot['creatorID'] ?? '';
+  }
+  Map toMap(){
+    return {
+      "id" : id,
+      "name" : name,
+      "manufacturerID": manufacturerID,
+      "kkal": kkal,
+      "protein": protein,
+      "fat": fat,
+      "carb": carb,
+      "sugar": sugar,
+      "fibers": fibers,
+      "receiptID": receiptID,
+      "creatorID": creatorID,
+    };
+  }
+  String id;
+  String name;
+  String manufacturerID;
+  double kkal;
+  double protein;
+  double fat;
+  double carb;
+  double sugar;
+  double fibers;
+  String receiptID;
+  String creatorID;
+}
+
+class ReceiptEntry implements OrmRecord{
+  ReceiptEntry({this.id, this.receiptID, this.productID, this.weight, this.weightUnit = WeightUnit.G, this.creatorID});
+  ReceiptEntry.fromMap(Map snapshot){
+    id = snapshot["id"] ?? "";
+    receiptID = snapshot["receiptID"] ?? "";
+    productID = snapshot["productID"] ?? "";
+    weight = snapshot["weight"] ?? 0;
+    weightUnit = snapshot["weightUnit"] ?? WeightUnit.G;
+    creatorID = snapshot["creatorID"] ?? "";
+  }
+  Map toMap(){
+    return {
+    "id": id,
+    "receiptID": receiptID,
+    "productID": productID,
+    "weight": weight,
+    "weightUnit": weightUnit,
+    "creatorID": creatorID,
+    };
+  }
+  String id;
+  String receiptID;
+  String productID;
+  double weight;
+  WeightUnit weightUnit;
+  String creatorID;
+}
+
+class Receipt implements OrmRecord{
+  Receipt({this.id, this.name, this.description, this.kkal, this.protein, this.fat, this.carb, this.sugar, this.fibers, this.weight, this.weightUnit, this.creatorID});
+  Receipt.fromMap(Map snapshot){
+    id = snapshot['id'] ?? "";
+    name = snapshot["name"] ?? "";
+    description = snapshot["description"] ?? "";
+    kkal = snapshot['kkal'] ?? 0;
+    protein = snapshot['protein'] ?? 0;
+    fat = snapshot['fat'] ?? 0;
+    carb = snapshot['carb'] ?? 0;
+    sugar = snapshot['sugar'] ?? 0;
+    fibers = snapshot['fibers'] ?? 0;
+    weightUnit = snapshot['weightUnit'] ?? WeightUnit.G;
+    creatorID = snapshot['creatorID'] ?? '';
+  }
+  Map toMap(){
+    return {
+      "id" : id,
+      "name" : name,
+      "description": description,
+      "kkal": kkal,
+      "protein": protein,
+      "fat": fat,
+      "carb": carb,
+      "sugar": sugar,
+      "fibers": fibers,
+      "weightUnit": weightUnit,
+      "creatorID": creatorID,
+    };
+  }
+  String id;
+  String name;
+  String description;
+  double kkal;
+  double protein;
+  double fat;
+  double carb;
+  double sugar;
+  double fibers;
+  double weight;
+  WeightUnit weightUnit;
+  String creatorID;
+}
+
+class Meal implements OrmRecord{
+  Meal({this.id, this.time, this.productID, this.weight, this.weightUnit, this.creatorID});
+  Meal.fromMap(Map snapshot){
+    id = snapshot["id"];
+    time = snapshot["time"];
+    productID = snapshot["productID"];
+    weight = snapshot["weight"];
+    weightUnit = snapshot["weightUnit"];
+    creatorID = snapshot["creatorID"];
+  }
+  Map toMap(){
+    return {
+      "id": id,
+      "time": time,
+      "productID": productID,
+      "weightUnit": weightUnit,
+      "creatorID": creatorID,
+    };
+  }
+  String id;
+  int time;
+  String productID;
+  double weight;
+  WeightUnit weightUnit;
+  String creatorID;
+}
+
 class JsonMeal {
   JsonMeal();
   String date;
@@ -42,43 +200,27 @@ class JsonMeal {
   String fbrg;
   String sgrg;
   String kkal;
-  static fromJson(dynamic val){
+  static fromJson(dynamic val) {
     JsonMeal M = new JsonMeal();
-      M.date = val['date'];
-      M.week = val['week'];
-      M.meal = val['meal'];
-      M.product = val['product'];
-      M.m = val['M'];
-      M.p = val['P'];
-      M.f = val['F'];
-      M.c = val['C'];
-      M.fbr = val['FBR'];
-      M.sgr = val['SGR'];
-      M.k = val['K'];
-      M.pg = val['Pg'];
-      M.fg = val['Fg'];
-      M.cg = val['Cg'];
-      M.fbrg = val['FBRg'];
-      M.sgrg = val['SGRg'];
-      M.kkal = val['Kcal'];
-      return M;
+    M.date = val['date'];
+    M.week = val['week'];
+    M.meal = val['meal'];
+    M.product = val['product'];
+    M.m = val['M'];
+    M.p = val['P'];
+    M.f = val['F'];
+    M.c = val['C'];
+    M.fbr = val['FBR'];
+    M.sgr = val['SGR'];
+    M.k = val['K'];
+    M.pg = val['Pg'];
+    M.fg = val['Fg'];
+    M.cg = val['Cg'];
+    M.fbrg = val['FBRg'];
+    M.sgrg = val['SGRg'];
+    M.kkal = val['Kcal'];
+    return M;
   }
-}
-
-class Meal {
-  Meal(
-      {this.id,
-      this.time,
-      this.product,
-      this.weight,
-      this.weigthUnit = WeightUnit.G,
-      this.user});
-  String id;
-  DateTime time;
-  Product product;
-  double weight;
-  WeightUnit weigthUnit;
-  User user;
 }
 
 List<Product> products;

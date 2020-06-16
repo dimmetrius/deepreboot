@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app/utils/AppTheme.dart';
 
-
 class LoginPagePhone extends StatefulWidget {
   final String title = 'Login';
   @override

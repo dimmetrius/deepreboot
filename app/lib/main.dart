@@ -1,16 +1,23 @@
+import 'package:app/model/auth_provider.dart';
+import 'package:app/pages/home.dart';
 import 'package:app/pages/login_code.dart';
 import 'package:app/pages/login_phone.dart';
 import 'package:app/pages/settings.dart';
 import 'package:app/pages/tracker.dart';
 import 'package:app/utils/AppTheme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => AuthProvider(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +25,8 @@ class MyApp extends StatelessWidget {
       title: 'DEEP.REBOOT',
       theme: themeData,
       routes: <String, WidgetBuilder>{
-        '/': (BuildContext context) => LoginPagePhone(),
+        '/': (BuildContext context) => HomePage(),
+        '/phone': (BuildContext context) => LoginPagePhone(),
         '/code': (BuildContext context) => LoginPageCode(),
         '/tracker': (BuildContext context) => TrackerPage(),
         '/settings': (BuildContext context) => SettingsPage(),

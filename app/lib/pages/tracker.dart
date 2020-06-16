@@ -1,4 +1,5 @@
 import 'package:app/components/app_drawer.dart';
+import 'package:app/model/crud_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,24 +15,28 @@ final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 class TrackerPageState extends State<TrackerPage> {
   DateTime _dateTime = DateTime.now();
   List<JsonMeal> mymeals = [];
-  List<int> pfc = [0,0,0];
+  List<int> pfc = [0, 0, 0];
+
+  CRUDModel crudProduct = new CRUDModel(RecType.Product);
 
   @override
-
   void initState() {
     initJson();
     super.initState();
+    crudProduct.addProduct(Product());
   }
 
   initJson() async {
-     await loadJson(context);
-     getMeals();
+    await loadJson(context);
+    getMeals();
   }
 
   getMeals() {
-    setState((){
-      mymeals = meals.where((el) => DateFormat('dd.MM.yyyy').format(_dateTime) == el.date).toList();
-      pfc = [0,0,0];
+    setState(() {
+      mymeals = meals
+          .where((el) => DateFormat('dd.MM.yyyy').format(_dateTime) == el.date)
+          .toList();
+      pfc = [0, 0, 0];
     });
   }
 
@@ -125,7 +130,9 @@ class TrackerPageState extends State<TrackerPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Text(
                       'SUM KKAL',
                       style: TextStyle(fontWeight: FontWeight.bold),
@@ -148,13 +155,49 @@ class TrackerPageState extends State<TrackerPage> {
                 /// uncomment the following line:
                 /// if (index > n) return null;
                 JsonMeal meal = mymeals[index];
+                return Container(
+                    height: 90.0,
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                            width: 90.0,
+                            height: 90.0,
+                            child: Center(
+                              child: Text('*'),
+                            )),
+                        Expanded(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(meal.product),
+                                Text('Б: ' +
+                                    meal.pg +
+                                    ', Ж: ' +
+                                    meal.fg +
+                                    ', У: ' +
+                                    meal.cg),
+                                Text(meal.kkal + ' kkal')
+                              ]),
+                        ),
+                        Container(
+                            width: 90.0,
+                            height: 90.0,
+                            child: Center(
+                              child: Text(meal.m + 'g'),
+                            )),
+                      ],
+                    ));
+                /*
                 return ListTile(
+                  /*
                   leading: Expanded(
                     child: AspectRatio(
                       aspectRatio: 1,
                       child: Icon(Icons.label),
                     ),
                   ),
+                  */
                   trailing: Text(meal.m + 'g'),
                   title: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -165,6 +208,7 @@ class TrackerPageState extends State<TrackerPage> {
                         Text(meal.kkal + ' kkal')
                       ]),
                 );
+                */
               },
 
               /// Set childCount to limit no.of items
