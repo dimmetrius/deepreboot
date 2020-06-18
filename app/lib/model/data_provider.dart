@@ -5,7 +5,7 @@ enum WeightUnit { G, KG, LBS }
 enum RecType {User, Manufacturer, Product, ReceiptEntry, Receipt, Meal}
 abstract class OrmRecord{
   OrmRecord.fromMap(Map snapshot);
-  Map toMap();
+  Map<String, dynamic> toMap();
 }
 
 class User implements OrmRecord{
@@ -15,7 +15,7 @@ class User implements OrmRecord{
     id = snapshot['id'] ?? '';
     phone = snapshot['phone'] ?? '';
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
       "id": id,
       "phone": phone 
@@ -31,7 +31,7 @@ class Manufacturer implements OrmRecord{
     id = snapshot['id'] ?? '';
     name = snapshot['name'] ?? '';
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
       "id": id,
       "name": name 
@@ -54,7 +54,7 @@ class Product implements OrmRecord {
     receiptID = snapshot['receiptID'] ?? '';
     creatorID = snapshot['creatorID'] ?? '';
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
       "id" : id,
       "name" : name,
@@ -92,7 +92,7 @@ class ReceiptEntry implements OrmRecord{
     weightUnit = snapshot["weightUnit"] ?? WeightUnit.G;
     creatorID = snapshot["creatorID"] ?? "";
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
     "id": id,
     "receiptID": receiptID,
@@ -125,7 +125,7 @@ class Receipt implements OrmRecord{
     weightUnit = snapshot['weightUnit'] ?? WeightUnit.G;
     creatorID = snapshot['creatorID'] ?? '';
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
       "id" : id,
       "name" : name,
@@ -164,7 +164,7 @@ class Meal implements OrmRecord{
     weightUnit = snapshot["weightUnit"];
     creatorID = snapshot["creatorID"];
   }
-  Map toMap(){
+  Map<String, dynamic> toMap(){
     return {
       "id": id,
       "time": time,

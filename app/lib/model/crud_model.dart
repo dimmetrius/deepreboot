@@ -61,8 +61,13 @@ class CRUDModel {
     return ;
   }
 
-  Future addProduct(OrmRecord data) async{
+  Future addRecord(OrmRecord data) async{
     await _api.addDocument(data.toMap()) ;
+    return ;
+  }
+
+  Future addRecordWithId(OrmRecord data, String id) async{
+    await _api.addDocumentWithId(data.toMap(), id) ;
     return ;
   }
 

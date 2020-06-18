@@ -3,6 +3,7 @@ import 'package:app/model/crud_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class TrackerPage extends StatefulWidget {
   final String title = 'FOOD.REBOOT';
@@ -23,7 +24,8 @@ class TrackerPageState extends State<TrackerPage> {
   void initState() {
     initJson();
     super.initState();
-    crudProduct.addProduct(Product());
+    String id = new Uuid().v4();
+    crudProduct.addRecordWithId(Product.fromMap({"id": id}), id);
   }
 
   initJson() async {

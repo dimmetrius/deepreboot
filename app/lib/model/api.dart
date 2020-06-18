@@ -21,10 +21,13 @@ class Api{
   Future<void> removeDocument(String id){
     return ref.document(id).delete();
   }
-  Future<DocumentReference> addDocument(Map data) {
+  Future<DocumentReference> addDocument(Map<String, dynamic> data) {
     return ref.add(data);
   }
-  Future<void> updateDocument(Map data , String id) {
+  Future<void> addDocumentWithId(Map<String, dynamic> data, id) {
+    return ref.document(id).setData(data);
+  }
+  Future<void> updateDocument(Map<String, dynamic> data , String id) {
     return ref.document(id).updateData(data) ;
   }
 }
