@@ -6,7 +6,10 @@ import 'package:provider/provider.dart';
 class HomePage extends StatelessWidget {
   checkAuthState(AuthProvider auth, BuildContext context) {
     if (auth.isAuthenticated) {
-      print('AUTH');
+      print('home isAuthenticated');
+      Navigator.of(context).pushReplacementNamed('/tracker');
+    } else {
+      print('home notAuthenticated');
       Navigator.of(context).pushReplacementNamed('/phone');
     }
   }
@@ -18,7 +21,9 @@ class HomePage extends StatelessWidget {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           checkAuthState(auth, context);
         });
-        return Scaffold(body: Center(child: Text('deep.reboot')),);
+        return Scaffold(
+          body: Center(child: Text('deep.reboot')),
+        );
       },
     );
   }

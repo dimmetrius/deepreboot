@@ -1,8 +1,8 @@
 import 'package:app/components/app_drawer.dart';
+import 'package:app/model/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-final FirebaseAuth _auth = FirebaseAuth.instance;
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
   final String title = 'Settings';
@@ -11,43 +11,41 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      drawer: AppDrawer('/settings'),
-      appBar: AppBar(
-        title: Text(widget.title),
-        actions: <Widget>[
-          Builder(builder: (BuildContext context) {
-            return FlatButton(
-              child: const Text('Sign out'),
-              textColor: Colors.red,
-              onPressed: () async {
-                final FirebaseUser user = await _auth.currentUser();
-                if (user == null) {
-                  Scaffold.of(context).showSnackBar(const SnackBar(
-                    content: Text('No one has signed in.'),
-                  ));
-                  return;
-                }
-                _signOut();
-                final String uid = user.uid;
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text(uid + ' has successfully signed out.'),
-                ));
-              },
-            );
-          })
-        ],
-      ),
-      body: Builder(builder: (BuildContext context) {
-        return Container();
-      }),
-    );
+  checkAuthState(AuthProvider auth, BuildContext context) {
+    print('settings');
+    if (!auth.isAuthenticated) {
+      Navigator.of(context).pushReplacementNamed('/');
+    }
   }
 
-  // Example code for sign out.
-  void _signOut() {
-    Navigator.of(context).pushReplacementNamed('/');
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AuthProvider>(
+      builder: (context, auth, child) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          checkAuthState(auth, context);
+        });
+        return Scaffold(
+          drawer: AppDrawer('/settings'),
+          appBar: AppBar(
+            title: Text(widget.title),
+            actions: <Widget>[
+              Builder(builder: (BuildContext context) {
+                return FlatButton(
+                  child: const Text('Sign out'),
+                  textColor: Colors.red,
+                  onPressed: () async {
+                    auth.signOut();
+                  },
+                );
+              })
+            ],
+          ),
+          body: Builder(builder: (BuildContext context) {
+            return Container();
+          }),
+        );
+      },
+    );
   }
 }

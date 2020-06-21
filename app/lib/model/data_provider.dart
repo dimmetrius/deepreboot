@@ -2,45 +2,51 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 enum WeightUnit { G, KG, LBS }
-enum RecType {User, Manufacturer, Product, ReceiptEntry, Receipt, Meal}
-abstract class OrmRecord{
+enum RecType { User, Manufacturer, Product, ReceiptEntry, Receipt, Meal }
+
+abstract class OrmRecord {
   OrmRecord.fromMap(Map snapshot);
   Map<String, dynamic> toMap();
 }
 
-class User implements OrmRecord{
+class User implements OrmRecord {
   String id;
   String phone;
-  User.fromMap(Map snapshot){
+  User.fromMap(Map snapshot) {
     id = snapshot['id'] ?? '';
     phone = snapshot['phone'] ?? '';
   }
-  Map<String, dynamic> toMap(){
-    return {
-      "id": id,
-      "phone": phone 
-    };
+  Map<String, dynamic> toMap() {
+    return {"id": id, "phone": phone};
   }
 }
 
-class Manufacturer implements OrmRecord{
+class Manufacturer implements OrmRecord {
   String id;
   String name;
   Manufacturer({this.id, this.name});
-  Manufacturer.fromMap(Map snapshot){
+  Manufacturer.fromMap(Map snapshot) {
     id = snapshot['id'] ?? '';
     name = snapshot['name'] ?? '';
   }
-  Map<String, dynamic> toMap(){
-    return {
-      "id": id,
-      "name": name 
-    };
+  Map<String, dynamic> toMap() {
+    return {"id": id, "name": name};
   }
 }
 
 class Product implements OrmRecord {
-  Product({this.id, this.name, this.manufacturerID, this.kkal, this.protein, this.fat, this.carb, this.sugar, this.fibers, this.receiptID, this.creatorID});
+  Product(
+      {this.id,
+      this.name,
+      this.manufacturerID,
+      this.kkal,
+      this.protein,
+      this.fat,
+      this.carb,
+      this.sugar,
+      this.fibers,
+      this.receiptID,
+      this.creatorID});
   Product.fromMap(Map snapshot) {
     id = snapshot['id'] ?? '';
     name = snapshot['name'] ?? '';
@@ -54,10 +60,10 @@ class Product implements OrmRecord {
     receiptID = snapshot['receiptID'] ?? '';
     creatorID = snapshot['creatorID'] ?? '';
   }
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
-      "id" : id,
-      "name" : name,
+      "id": id,
+      "name": name,
       "manufacturerID": manufacturerID,
       "kkal": kkal,
       "protein": protein,
@@ -69,6 +75,7 @@ class Product implements OrmRecord {
       "creatorID": creatorID,
     };
   }
+
   String id;
   String name;
   String manufacturerID;
@@ -82,9 +89,15 @@ class Product implements OrmRecord {
   String creatorID;
 }
 
-class ReceiptEntry implements OrmRecord{
-  ReceiptEntry({this.id, this.receiptID, this.productID, this.weight, this.weightUnit = WeightUnit.G, this.creatorID});
-  ReceiptEntry.fromMap(Map snapshot){
+class ReceiptEntry implements OrmRecord {
+  ReceiptEntry(
+      {this.id,
+      this.receiptID,
+      this.productID,
+      this.weight,
+      this.weightUnit = WeightUnit.G,
+      this.creatorID});
+  ReceiptEntry.fromMap(Map snapshot) {
     id = snapshot["id"] ?? "";
     receiptID = snapshot["receiptID"] ?? "";
     productID = snapshot["productID"] ?? "";
@@ -92,16 +105,17 @@ class ReceiptEntry implements OrmRecord{
     weightUnit = snapshot["weightUnit"] ?? WeightUnit.G;
     creatorID = snapshot["creatorID"] ?? "";
   }
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
-    "id": id,
-    "receiptID": receiptID,
-    "productID": productID,
-    "weight": weight,
-    "weightUnit": weightUnit,
-    "creatorID": creatorID,
+      "id": id,
+      "receiptID": receiptID,
+      "productID": productID,
+      "weight": weight,
+      "weightUnit": weightUnit,
+      "creatorID": creatorID,
     };
   }
+
   String id;
   String receiptID;
   String productID;
@@ -110,9 +124,21 @@ class ReceiptEntry implements OrmRecord{
   String creatorID;
 }
 
-class Receipt implements OrmRecord{
-  Receipt({this.id, this.name, this.description, this.kkal, this.protein, this.fat, this.carb, this.sugar, this.fibers, this.weight, this.weightUnit, this.creatorID});
-  Receipt.fromMap(Map snapshot){
+class Receipt implements OrmRecord {
+  Receipt(
+      {this.id,
+      this.name,
+      this.description,
+      this.kkal,
+      this.protein,
+      this.fat,
+      this.carb,
+      this.sugar,
+      this.fibers,
+      this.weight,
+      this.weightUnit,
+      this.creatorID});
+  Receipt.fromMap(Map snapshot) {
     id = snapshot['id'] ?? "";
     name = snapshot["name"] ?? "";
     description = snapshot["description"] ?? "";
@@ -125,10 +151,10 @@ class Receipt implements OrmRecord{
     weightUnit = snapshot['weightUnit'] ?? WeightUnit.G;
     creatorID = snapshot['creatorID'] ?? '';
   }
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
-      "id" : id,
-      "name" : name,
+      "id": id,
+      "name": name,
       "description": description,
       "kkal": kkal,
       "protein": protein,
@@ -140,6 +166,7 @@ class Receipt implements OrmRecord{
       "creatorID": creatorID,
     };
   }
+
   String id;
   String name;
   String description;
@@ -154,9 +181,15 @@ class Receipt implements OrmRecord{
   String creatorID;
 }
 
-class Meal implements OrmRecord{
-  Meal({this.id, this.time, this.productID, this.weight, this.weightUnit, this.creatorID});
-  Meal.fromMap(Map snapshot){
+class Meal implements OrmRecord {
+  Meal(
+      {this.id,
+      this.time,
+      this.productID,
+      this.weight,
+      this.weightUnit,
+      this.creatorID});
+  Meal.fromMap(Map snapshot) {
     id = snapshot["id"];
     time = snapshot["time"];
     productID = snapshot["productID"];
@@ -164,7 +197,7 @@ class Meal implements OrmRecord{
     weightUnit = snapshot["weightUnit"];
     creatorID = snapshot["creatorID"];
   }
-  Map<String, dynamic> toMap(){
+  Map<String, dynamic> toMap() {
     return {
       "id": id,
       "time": time,
@@ -173,6 +206,7 @@ class Meal implements OrmRecord{
       "creatorID": creatorID,
     };
   }
+
   String id;
   int time;
   String productID;

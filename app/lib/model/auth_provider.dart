@@ -25,7 +25,7 @@ class AuthProvider extends ChangeNotifier {
     });
 
     timer = new Timer.periodic(Duration(seconds: 5), (Timer t) {
-      notifyListeners();
+      // notifyListeners();
     });
   }
 
@@ -116,6 +116,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   void signOut() {
+    verificationId = null;
     _auth.signOut();
   }
 }
