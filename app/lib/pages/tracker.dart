@@ -1,5 +1,5 @@
 import 'package:app/components/app_drawer.dart';
-import 'package:app/model/crud_model.dart';
+import 'package:app/service/crud_service.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +18,7 @@ class TrackerPageState extends State<TrackerPage> {
   List<JsonMeal> mymeals = [];
   List<int> pfc = [0, 0, 0];
 
-  CRUDModel crudProduct = new CRUDModel(RecType.Product);
+  CRUDService crudProduct = new CRUDService(RecType.Product, '');
 
   @override
   void initState() {

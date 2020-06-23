@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class AuthProvider extends ChangeNotifier {
+class AuthModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   FirebaseUser user;
@@ -12,7 +12,7 @@ class AuthProvider extends ChangeNotifier {
 
   Timer timer;
 
-  AuthProvider() {
+  AuthModel() {
     userAuthSub = _auth.onAuthStateChanged.listen((newUser) {
       print('AuthProvider - FirebaseAuth - onAuthStateChanged - $newUser');
       user = newUser;
@@ -108,7 +108,7 @@ class AuthProvider extends ChangeNotifier {
     assert(user.uid == currentUser.uid);
     if (user != null) {
       authError = false;
-      notifyListeners();
+      //notifyListeners();
     } else {
       authError = true;
       notifyListeners();

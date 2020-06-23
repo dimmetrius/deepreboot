@@ -1,5 +1,5 @@
 import 'package:app/components/app_drawer.dart';
-import 'package:app/model/auth_provider.dart';
+import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +11,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class SettingsPageState extends State<SettingsPage> {
-  checkAuthState(AuthProvider auth, BuildContext context) {
+  checkAuthState(AuthModel auth, BuildContext context) {
     print('settings');
     if (!auth.isAuthenticated) {
       Navigator.of(context).pushReplacementNamed('/');
@@ -20,7 +20,7 @@ class SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthModel>(
       builder: (context, auth, child) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           checkAuthState(auth, context);

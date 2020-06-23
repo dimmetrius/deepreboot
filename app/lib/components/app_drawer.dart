@@ -1,4 +1,4 @@
-import 'package:app/model/auth_provider.dart';
+import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +16,7 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthModel>(
       builder: (context, auth, child) {
         return Drawer(
           // Add a ListView to the drawer. This ensures the user can scroll

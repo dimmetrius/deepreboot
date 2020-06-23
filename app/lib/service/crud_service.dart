@@ -1,12 +1,12 @@
-import 'package:app/model/api.dart';
+import 'package:app/service/api.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CRUDModel {
+class CRUDService {
   RecType recType;
-  Api _api = new Api('');
+  Api _api;
 
-  CRUDModel(RecType recType) {
+  CRUDService(RecType recType, String userID) {
     this.recType = recType;
     String collectionName = '';
     switch (recType) {
@@ -31,7 +31,7 @@ class CRUDModel {
       default:
         throw 'Unsupported';
     }
-    this._api = new Api(collectionName);
+    this._api = new Api(collectionName, userID);
   }
 
   List<OrmRecord> records;

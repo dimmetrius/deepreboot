@@ -1,4 +1,4 @@
-import 'package:app/model/auth_provider.dart';
+import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/AppTheme.dart';
 import 'package:flutter/scheduler.dart';
@@ -13,7 +13,7 @@ class LoginPageCode extends StatefulWidget {
 class LoginPageCodeState extends State<LoginPageCode> {
   final TextEditingController _smsController = TextEditingController();
 
-  checkAuthState(AuthProvider auth, BuildContext context) {
+  checkAuthState(AuthModel auth, BuildContext context) {
     print(['login_code', auth.isAuthenticated]);
     if (auth.isAuthenticated) {
       Navigator.of(context).pushReplacementNamed('/tracker');
@@ -22,7 +22,7 @@ class LoginPageCodeState extends State<LoginPageCode> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<AuthProvider>(
+    return Consumer<AuthModel>(
       builder: (context, auth, child) {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           checkAuthState(auth, context);

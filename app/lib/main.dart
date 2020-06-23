@@ -1,4 +1,5 @@
-import 'package:app/model/auth_provider.dart';
+import 'package:app/model/auth_model.dart';
+import 'package:app/model/products_model.dart';
 import 'package:app/pages/home.dart';
 import 'package:app/pages/login_code.dart';
 import 'package:app/pages/login_phone.dart';
@@ -8,12 +9,15 @@ import 'package:app/utils/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() {  
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => AuthProvider(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider( create: (context) => AuthModel()),
+        ChangeNotifierProvider( create: (context) => ProductsModel()),
+      ],
       child: MyApp(),
-    ),
+    )
   );
 }
 

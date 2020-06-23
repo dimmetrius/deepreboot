@@ -1,4 +1,4 @@
-import 'package:app/model/auth_provider.dart';
+import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
 import 'package:app/utils/AppTheme.dart';
 import 'package:flutter/scheduler.dart';
@@ -13,7 +13,7 @@ class LoginPagePhone extends StatefulWidget {
 class LoginPagePhoneState extends State<LoginPagePhone> {
   final TextEditingController _phoneNumberController = TextEditingController();
 
-  checkAuthState(AuthProvider auth, BuildContext context) {
+  checkAuthState(AuthModel auth, BuildContext context) {
     print(['login_phone', auth.verificationId]);
     if (auth.verificationId != null) {
       Navigator.of(context).pushReplacementNamed('/code');
@@ -24,7 +24,7 @@ class LoginPagePhoneState extends State<LoginPagePhone> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Builder(builder: (BuildContext context) {
-        return Consumer<AuthProvider>(
+        return Consumer<AuthModel>(
           builder: (context, auth, child) {
             SchedulerBinding.instance.addPostFrameCallback((_) {
               checkAuthState(auth, context);
