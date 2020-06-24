@@ -16,7 +16,7 @@ class AuthModel extends ChangeNotifier {
     userAuthSub = _auth.onAuthStateChanged.listen((newUser) {
       print('AuthProvider - FirebaseAuth - onAuthStateChanged - $newUser');
       user = newUser;
-      print(['userID', user.uid]);
+      print(['userID', user?.uid]);
       authError = false;
       notifyListeners();
     }, onError: (e) {

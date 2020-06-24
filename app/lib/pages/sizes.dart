@@ -20,7 +20,7 @@ class SizesPage extends StatelessWidget {
         });
         return Scaffold(
           drawer: AppDrawer('/sizes'),
-            appBar: AppBar(
+          appBar: AppBar(
             title: Text('sizes'),
           ),
           body: Center(child: Text('sizes')),

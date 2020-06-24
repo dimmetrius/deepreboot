@@ -40,8 +40,10 @@ class TrackerPageState extends State<TrackerPage> {
 
   @override
   Widget build(BuildContext context) {
-    CollectionModel<Meal> mealsModel = Provider.of<CollectionModel<Meal>>(context);
-    CollectionModel<Product> productsModel = Provider.of<CollectionModel<Product>>(context);
+    CollectionModel<Meal> mealsModel =
+        Provider.of<CollectionModel<Meal>>(context);
+    CollectionModel<Product> productsModel =
+        Provider.of<CollectionModel<Product>>(context);
     List<Meal> mymeals = mealsModel.records;
     List<Product> products = productsModel.records;
     return Scaffold(
@@ -90,7 +92,8 @@ class TrackerPageState extends State<TrackerPage> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 alignment: FractionalOffset.center,
-                child:  SingleChildScrollView(child: Column(
+                child: SingleChildScrollView(
+                    child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
@@ -177,7 +180,7 @@ class TrackerPageState extends State<TrackerPage> {
                                     ', Ж: ' +
                                     '0' +
                                     ', У: ' +
-                                     '0'),
+                                    '0'),
                                 Text('0' + ' kkal')
                               ]),
                         ),

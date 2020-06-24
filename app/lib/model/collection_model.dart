@@ -1,15 +1,59 @@
+import 'dart:async';
+
 import 'package:app/model/auth_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:app/service/api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+abstract class QueryFilter {
+  Query apply(Query query);
+}
+
+class WhereFilter extends QueryFilter {
+  dynamic field;
+  dynamic isEqualTo;
+  dynamic isLessThan;
+  dynamic isLessThanOrEqualTo;
+  dynamic isGreaterThan;
+  dynamic isGreaterThanOrEqualTo;
+  dynamic arrayContains;
+  List<dynamic> arrayContainsAny;
+  List<dynamic> whereIn;
+  bool isNull;
+
+  WhereFilter(
+    this.field, {
+    this.isEqualTo,
+    this.isLessThan,
+    this.isLessThanOrEqualTo,
+    this.isGreaterThan,
+    this.isGreaterThanOrEqualTo,
+    this.arrayContains,
+    this.arrayContainsAny,
+    this.whereIn,
+    this.isNull,
+  });
+
+  Query apply(Query input) {
+    if (field == null) {
+      return input;
+    }
+    if (isEqualTo != null) {
+      return input.where(field, isEqualTo: isEqualTo);
+    }
+    return input;
+  }
+}
+
 class CollectionModel<T> extends ChangeNotifier {
   AuthModel authModel;
   Api api;
   Query query;
+  List<QueryFilter> filters;
   String collectionName = '';
-  CollectionModel(AuthModel authModel){
+  StreamSubscription<QuerySnapshot> subscription;
+  CollectionModel(AuthModel authModel) {
     this.authModel = authModel;
     switch (T) {
       case User:
@@ -33,10 +77,11 @@ class CollectionModel<T> extends ChangeNotifier {
       default:
         throw 'Unsupported';
     }
+    api = Api(collectionName);
     authModel.addListener(fetch);
   }
 
-    OrmRecord _fromMap(Map snapshot) {
+  OrmRecord _fromMap(Map snapshot) {
     switch (T) {
       case User:
         return User.fromMap(snapshot);
@@ -55,24 +100,36 @@ class CollectionModel<T> extends ChangeNotifier {
     }
   }
 
-  fetch(){
-    if(authModel.user == null){
+  setFilter(List<QueryFilter> filters) {
+    this.filters = filters;
+    fetch();
+  }
+
+  fetch() async {
+    if (authModel.user == null) {
       records = [];
+      subscription = null;
       notifyListeners();
-    }else{
-      api = Api(collectionName);
+    } else {
+      await subscription?.cancel();
       query = api.ref.where('creatorID', isEqualTo: authModel.user.uid);
-      query.snapshots().listen((event) {
-        records = event.documents.map((e) => _fromMap(e.data)).cast<T>().toList();
+      filters?.forEach((filter) {
+        query = filter.apply(query);
+      });
+      subscription = query.snapshots().listen((event) {
+        records =
+            event.documents.map((e) => _fromMap(e.data)).cast<T>().toList();
         notifyListeners();
       });
     }
   }
+
   @override
   void dispose() {
+    subscription.cancel();
     authModel.removeListener(fetch);
     super.dispose();
   }
-  
+
   List<T> records = new List<T>();
 }

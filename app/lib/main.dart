@@ -18,16 +18,16 @@ void main() {
   AuthModel authModel = AuthModel();
   CollectionModel<Product> productsModel = CollectionModel<Product>(authModel);
   CollectionModel<Meal> mealsModel = CollectionModel<Meal>(authModel);
-  runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value( value: authModel),
-        ChangeNotifierProvider.value( value: productsModel),
-        ChangeNotifierProvider.value( value: mealsModel),
-      ],
-      child: MyApp(),
-    )
-  );
+  mealsModel.setFilter(
+      [WhereFilter('id', isEqualTo: '8e207f38-dc63-4d49-a3ce-a9b3d74e04d0')]);
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider.value(value: authModel),
+      ChangeNotifierProvider.value(value: productsModel),
+      ChangeNotifierProvider.value(value: mealsModel),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

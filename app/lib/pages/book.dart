@@ -20,7 +20,7 @@ class BookPage extends StatelessWidget {
         });
         return Scaffold(
           drawer: AppDrawer('/book'),
-            appBar: AppBar(
+          appBar: AppBar(
             title: Text('book'),
           ),
           body: Center(child: Text('size.quarter book')),

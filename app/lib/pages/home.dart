@@ -1,4 +1,5 @@
 import 'package:app/model/auth_model.dart';
+import 'package:app/utils/AppTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
@@ -22,7 +23,25 @@ class HomePage extends StatelessWidget {
           checkAuthState(auth, context);
         });
         return Scaffold(
-          body: Center(child: Text('deep.reboot')),
+          body: Container(
+            color: greenPrimary,
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.refresh,
+                  size: 40.0,
+                ),
+                Text(
+                  'DEEP.REBOOT',
+                  style: TextStyle(fontSize: 30.0),
+                ),
+                Text('Feel the Taste of life')
+              ],
+            )),
+          ),
         );
       },
     );
