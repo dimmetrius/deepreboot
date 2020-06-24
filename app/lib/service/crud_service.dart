@@ -31,7 +31,7 @@ class CRUDService {
       default:
         throw 'Unsupported';
     }
-    this._api = new Api(collectionName, userID);
+    this._api = new Api(collectionName);
   }
 
   List<OrmRecord> records;

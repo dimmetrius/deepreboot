@@ -1,9 +1,9 @@
 import 'package:app/components/app_drawer.dart';
-import 'package:app/service/crud_service.dart';
+import 'package:app/model/collection_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
+import 'package:provider/provider.dart';
 
 class TrackerPage extends StatefulWidget {
   final String title = 'FOOD.REBOOT';
@@ -18,14 +18,10 @@ class TrackerPageState extends State<TrackerPage> {
   List<JsonMeal> mymeals = [];
   List<int> pfc = [0, 0, 0];
 
-  CRUDService crudProduct = new CRUDService(RecType.Product, '');
-
   @override
   void initState() {
     initJson();
     super.initState();
-    String id = new Uuid().v4();
-    crudProduct.addRecordWithId(Product.fromMap({"id": id}), id);
   }
 
   initJson() async {
@@ -44,7 +40,10 @@ class TrackerPageState extends State<TrackerPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(_dateTime);
+    CollectionModel<Meal> mealsModel = Provider.of<CollectionModel<Meal>>(context);
+    CollectionModel<Product> productsModel = Provider.of<CollectionModel<Product>>(context);
+    List<Meal> mymeals = mealsModel.records;
+    List<Product> products = productsModel.records;
     return Scaffold(
       key: scaffoldKey,
       drawer: AppDrawer('/tracker'),
@@ -91,7 +90,7 @@ class TrackerPageState extends State<TrackerPage> {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 alignment: FractionalOffset.center,
-                child: Column(
+                child:  SingleChildScrollView(child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Row(
@@ -140,7 +139,7 @@ class TrackerPageState extends State<TrackerPage> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
-                ),
+                )),
               ),
             ),
             // Make the initial height of the SliverAppBar larger than normal.
@@ -156,7 +155,7 @@ class TrackerPageState extends State<TrackerPage> {
                 /// To convert this infinite list to a list with "n" no of items,
                 /// uncomment the following line:
                 /// if (index > n) return null;
-                JsonMeal meal = mymeals[index];
+                Meal meal = mymeals[index];
                 return Container(
                     height: 90.0,
                     child: Row(
@@ -172,21 +171,21 @@ class TrackerPageState extends State<TrackerPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(meal.product),
+                                Text(meal.id),
                                 Text('Б: ' +
-                                    meal.pg +
+                                    '0' +
                                     ', Ж: ' +
-                                    meal.fg +
+                                    '0' +
                                     ', У: ' +
-                                    meal.cg),
-                                Text(meal.kkal + ' kkal')
+                                     '0'),
+                                Text('0' + ' kkal')
                               ]),
                         ),
                         Container(
                             width: 90.0,
                             height: 90.0,
                             child: Center(
-                              child: Text(meal.m + 'g'),
+                              child: Text('0' + 'g'),
                             )),
                       ],
                     ));

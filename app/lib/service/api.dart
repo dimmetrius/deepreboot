@@ -3,11 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Api {
   final Firestore _db = Firestore.instance;
   final String path;
-  final String userID;
   
   CollectionReference ref;
 
-  Api(this.path, this.userID) {
+  Api(this.path) {
     ref = _db.collection(path);
   }
 
