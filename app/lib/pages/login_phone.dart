@@ -44,7 +44,7 @@ class LoginPagePhoneState extends State<LoginPagePhone> {
                       height: 20.0,
                     ),
                     TextFormField(
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.phone,
                       controller: _phoneNumberController,
                       decoration:
                           const InputDecoration(labelText: 'Phone number'),
