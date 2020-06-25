@@ -1,6 +1,7 @@
 import 'package:app/model/auth_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:app/model/collection_model.dart';
+import 'package:app/pages/add_meal.dart';
 import 'package:app/pages/book.dart';
 import 'package:app/pages/home.dart';
 import 'package:app/pages/login_code.dart';
@@ -51,6 +52,7 @@ class MyApp extends StatelessWidget {
         '/code': (BuildContext context) => LoginPageCode(),
         '/tracker': (BuildContext context) => TrackerPage(),
         '/settings': (BuildContext context) => SettingsPage(),
+        '/addmeal': (BuildContext context) => AddMealPage(),
       },
     );
   }

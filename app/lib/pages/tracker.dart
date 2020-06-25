@@ -13,14 +13,15 @@ class TrackerPage extends StatefulWidget {
 }
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-Product findProductById(List<Product> products, String id){
+Product findProductById(List<Product> products, String id) {
   Product p = products.firstWhere((element) {
     print(element.id);
     return element.id == id;
-  }, orElse: ()=>null);
+  }, orElse: () => null);
   print([id, p?.id, p?.name]);
   return p;
 }
+
 class TrackerPageState extends State<TrackerPage> {
   @override
   Widget build(BuildContext context) {
@@ -150,6 +151,7 @@ class TrackerPageState extends State<TrackerPage> {
                 Meal meal = mymeals[index];
                 return Container(
                     height: 90.0,
+                    padding: EdgeInsets.symmetric(vertical: 10),
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -163,13 +165,11 @@ class TrackerPageState extends State<TrackerPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(findProductById(products, meal?.productID)?.name ?? ''),
-                                Text('Б: ' +
-                                    '' +
-                                    ', Ж: ' +
-                                    '0' +
-                                    ', У: ' +
-                                    '0'),
+                                Text(findProductById(products, meal?.productID)
+                                        ?.name ??
+                                    ''),
+                                Text(
+                                    'Б: ' + '' + ', Ж: ' + '0' + ', У: ' + '0'),
                                 Text('0' + ' kkal')
                               ]),
                         ),
@@ -212,6 +212,8 @@ class TrackerPageState extends State<TrackerPage> {
       )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
+          Navigator.of(context).pushNamed('/addmeal');
+          /*
           showModalBottomSheet<String>(
               context: context,
               builder: (BuildContext context) => Container(
@@ -219,6 +221,7 @@ class TrackerPageState extends State<TrackerPage> {
                     child: Text('bottom'),
                     color: Colors.red,
                   ));
+          */
         },
         tooltip: 'Refresh',
         child: Icon(Icons.add),
