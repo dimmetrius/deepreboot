@@ -12,7 +12,7 @@ class TrackerPage extends StatefulWidget {
   State<StatefulWidget> createState() => TrackerPageState();
 }
 
-final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+// final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 Product findProductById(List<Product> products, String id) {
   Product p = products.firstWhere((element) {
     print(element.id);
@@ -35,7 +35,7 @@ class TrackerPageState extends State<TrackerPage> {
     List<Meal> mymeals = mealsModel.records;
     List<Product> products = productsModel.records;
     return Scaffold(
-      key: scaffoldKey,
+      //key: scaffoldKey,
       drawer: AppDrawer('/tracker'),
       appBar: AppBar(
           title: new Theme(
