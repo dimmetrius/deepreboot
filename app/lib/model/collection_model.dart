@@ -7,10 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 abstract class QueryFilter {
+  String name;
   Query apply(Query query);
 }
 
 class WhereFilter extends QueryFilter {
+  String name;
   dynamic field;
   dynamic isEqualTo;
   dynamic isLessThan;
@@ -23,6 +25,7 @@ class WhereFilter extends QueryFilter {
   bool isNull;
 
   WhereFilter(
+    this.name,
     this.field, {
     this.isEqualTo,
     this.isLessThan,
@@ -41,6 +44,18 @@ class WhereFilter extends QueryFilter {
     }
     if (isEqualTo != null) {
       return input.where(field, isEqualTo: isEqualTo);
+    }
+    if (isGreaterThan != null) {
+      return input.where(field, isGreaterThan: isGreaterThan);
+    }
+    if (isLessThan != null) {
+      return input.where(field, isLessThan: isLessThan);
+    }
+    if (isGreaterThanOrEqualTo != null) {
+      return input.where(field, isGreaterThanOrEqualTo: isGreaterThanOrEqualTo);
+    }
+    if (isLessThanOrEqualTo != null) {
+      return input.where(field, isLessThanOrEqualTo: isLessThanOrEqualTo);
     }
     return input;
   }
@@ -100,18 +115,24 @@ class CollectionModel<T> extends ChangeNotifier {
     }
   }
 
-  setFilter(List<QueryFilter> filters) {
+  setFilters(List<QueryFilter> filters) {
     this.filters = filters;
     fetch();
   }
 
+  QueryFilter getFilterByName(String name) {
+    return filters?.firstWhere((element) {
+      return name == element.name;
+    }, orElse: () => null);
+  }
+
   fetch() async {
+    await subscription?.cancel();
     if (authModel.user == null) {
       records = [];
       subscription = null;
       notifyListeners();
     } else {
-      await subscription?.cancel();
       query = api.ref.where('creatorID', isEqualTo: authModel.user.uid);
       filters?.forEach((filter) {
         query = filter.apply(query);
@@ -119,6 +140,7 @@ class CollectionModel<T> extends ChangeNotifier {
       subscription = query.snapshots().listen((event) {
         records =
             event.documents.map((e) => _fromMap(e.data)).cast<T>().toList();
+        print('records updated');
         notifyListeners();
       });
     }

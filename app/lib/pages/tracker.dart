@@ -1,6 +1,7 @@
 import 'package:app/components/app_drawer.dart';
 import 'package:app/model/collection_model.dart';
 import 'package:app/model/data_provider.dart';
+import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -12,36 +13,22 @@ class TrackerPage extends StatefulWidget {
 }
 
 final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+Product findProductById(List<Product> products, String id){
+  Product p = products.firstWhere((element) {
+    print(element.id);
+    return element.id == id;
+  }, orElse: ()=>null);
+  print([id, p?.id, p?.name]);
+  return p;
+}
 class TrackerPageState extends State<TrackerPage> {
-  DateTime _dateTime = DateTime.now();
-  List<JsonMeal> mymeals = [];
-  List<int> pfc = [0, 0, 0];
-
-  @override
-  void initState() {
-    initJson();
-    super.initState();
-  }
-
-  initJson() async {
-    await loadJson(context);
-    getMeals();
-  }
-
-  getMeals() {
-    setState(() {
-      mymeals = meals
-          .where((el) => DateFormat('dd.MM.yyyy').format(_dateTime) == el.date)
-          .toList();
-      pfc = [0, 0, 0];
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     CollectionModel<Meal> mealsModel =
         Provider.of<CollectionModel<Meal>>(context);
+    WhereFilter qf = mealsModel.getFilterByName('startTs');
+    DateTime _dateTime =
+        DateTime.fromMillisecondsSinceEpoch(qf.isGreaterThanOrEqualTo);
     CollectionModel<Product> productsModel =
         Provider.of<CollectionModel<Product>>(context);
     List<Meal> mymeals = mealsModel.records;
@@ -69,10 +56,12 @@ class TrackerPageState extends State<TrackerPage> {
                 .then((value) => {
                       if (value != null)
                         {
-                          setState(() {
-                            _dateTime = value;
-                            getMeals();
-                          })
+                          mealsModel.setFilters([
+                            WhereFilter('startTs', 'time',
+                                isGreaterThanOrEqualTo: getDateStartTs(value)),
+                            WhereFilter('endTs', 'time',
+                                isLessThanOrEqualTo: getDateEndTs(value)),
+                          ])
                         }
                     }),
           ),
@@ -174,9 +163,9 @@ class TrackerPageState extends State<TrackerPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(meal.id),
+                                Text(findProductById(products, meal?.productID)?.name ?? ''),
                                 Text('Б: ' +
-                                    '0' +
+                                    '' +
                                     ', Ж: ' +
                                     '0' +
                                     ', У: ' +

@@ -10,6 +10,7 @@ import 'package:app/pages/settings.dart';
 import 'package:app/pages/sizes.dart';
 import 'package:app/pages/tracker.dart';
 import 'package:app/utils/AppTheme.dart';
+import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,8 +19,12 @@ void main() {
   AuthModel authModel = AuthModel();
   CollectionModel<Product> productsModel = CollectionModel<Product>(authModel);
   CollectionModel<Meal> mealsModel = CollectionModel<Meal>(authModel);
-  mealsModel.setFilter(
-      [WhereFilter('id', isEqualTo: '8e207f38-dc63-4d49-a3ce-a9b3d74e04d0')]);
+  mealsModel.setFilters([
+    WhereFilter('startTs', 'time',
+        isGreaterThanOrEqualTo: getDateStartTs(DateTime.now())),
+    WhereFilter('endTs', 'time',
+        isLessThanOrEqualTo: getDateEndTs(DateTime.now())),
+  ]);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: authModel),

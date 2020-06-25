@@ -1,10 +1,16 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+enum AuthModelState {
+  UNDEFINED,
+  PROCESSING,
+  AUTHORIZED,
+  UNAUTHORIZED
+}
 class AuthModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  AuthModelState state = AuthModelState.UNDEFINED;
   FirebaseUser user;
   StreamSubscription userAuthSub;
   bool authError = false;
@@ -16,11 +22,13 @@ class AuthModel extends ChangeNotifier {
     userAuthSub = _auth.onAuthStateChanged.listen((newUser) {
       print('AuthProvider - FirebaseAuth - onAuthStateChanged - $newUser');
       user = newUser;
+      state = AuthModelState.AUTHORIZED;
       print(['userID', user?.uid]);
       authError = false;
       notifyListeners();
     }, onError: (e) {
       authError = true;
+      state = AuthModelState.UNAUTHORIZED;
       notifyListeners();
       print('AuthProvider - FirebaseAuth - onAuthStateChanged - $e');
     });
@@ -62,6 +70,7 @@ class AuthModel extends ChangeNotifier {
   }
 
   void verifyPhoneNumber(String phoneNumber) async {
+    state = AuthModelState.PROCESSING;
     final PhoneVerificationCompleted verificationCompleted =
         (AuthCredential phoneAuthCredential) {
       _auth.signInWithCredential(phoneAuthCredential);
@@ -72,6 +81,7 @@ class AuthModel extends ChangeNotifier {
     final PhoneVerificationFailed verificationFailed =
         (AuthException authException) {
       authError = true;
+      state = AuthModelState.UNAUTHORIZED;
       print(
           'Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
       notifyListeners();
@@ -79,6 +89,7 @@ class AuthModel extends ChangeNotifier {
 
     final PhoneCodeSent codeSent =
         (String _verificationId, [int forceResendingToken]) async {
+      state = AuthModelState.PROCESSING;
       print('Please check your phone for the verification code.');
       verificationId = _verificationId;
       notifyListeners();
@@ -86,6 +97,7 @@ class AuthModel extends ChangeNotifier {
 
     final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
         (String _verificationId) {
+      state = AuthModelState.PROCESSING;
       verificationId = _verificationId;
       notifyListeners();
     };
@@ -112,6 +124,7 @@ class AuthModel extends ChangeNotifier {
       //notifyListeners();
     } else {
       authError = true;
+      state = AuthModelState.UNAUTHORIZED;
       notifyListeners();
     }
   }

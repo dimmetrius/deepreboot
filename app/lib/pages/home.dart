@@ -6,10 +6,10 @@ import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   checkAuthState(AuthModel auth, BuildContext context) {
-    if (auth.isAuthenticated) {
+    if (auth.state == AuthModelState.AUTHORIZED) {
       print('home isAuthenticated');
       Navigator.of(context).pushReplacementNamed('/tracker');
-    } else {
+    } else if (auth.state == AuthModelState.UNAUTHORIZED) {
       print('home notAuthenticated');
       Navigator.of(context).pushReplacementNamed('/phone');
     }
