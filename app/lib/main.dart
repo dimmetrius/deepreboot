@@ -26,11 +26,13 @@ void main() {
     WhereFilter('endTs', 'time',
         isLessThanOrEqualTo: getDateEndTs(DateTime.now())),
   ]);
+  CollectionModel<Receipt> receiptsModel = CollectionModel<Receipt>(authModel);
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: authModel),
       ChangeNotifierProvider.value(value: productsModel),
       ChangeNotifierProvider.value(value: mealsModel),
+      ChangeNotifierProvider.value(value: receiptsModel),
     ],
     child: MyApp(),
   ));

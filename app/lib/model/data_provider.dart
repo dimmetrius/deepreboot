@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'package:flutter/material.dart';
-
 enum WeightUnit { G, KG, LBS }
 enum RecType { User, Manufacturer, Product, ReceiptEntry, Receipt, Meal }
 
@@ -257,15 +254,3 @@ class JsonMeal {
   }
 }
 
-List<Product> products;
-Product grecha = Product(id: 'id', name: 'Гречка');
-List<JsonMeal> meals = [];
-
-loadJson(BuildContext context) async {
-  String data =
-      await DefaultAssetBundle.of(context).loadString("res/food.json");
-  List<dynamic> jsonResult = jsonDecode(data);
-  jsonResult.forEach((dynamic element) {
-    meals.add(JsonMeal.fromJson(element));
-  });
-}
