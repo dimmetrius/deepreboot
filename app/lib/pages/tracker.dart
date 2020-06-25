@@ -35,9 +35,7 @@ class TrackerPageState extends State<TrackerPage> {
     });
   }
 
-  editSelected(BuildContext context){
-
-  }
+  editSelected(BuildContext context) {}
 
   deleteSelected(BuildContext context) {
     CollectionModel<Meal> mealsModel =
@@ -59,21 +57,21 @@ class TrackerPageState extends State<TrackerPage> {
         Provider.of<CollectionModel<Product>>(context);
     List<Meal> mymeals = mealsModel.records;
     List<Widget> actions = [];
-    if(selected.length == 1){
+    if (selected.length == 1) {
       actions.add(IconButton(
-                icon: Icon(Icons.edit),
-                iconSize: 35,
-                onPressed: () => editSelected(context)));
+          icon: Icon(Icons.edit),
+          iconSize: 35,
+          onPressed: () => editSelected(context)));
     }
-    if(selected.length > 0){
+    if (selected.length > 0) {
       actions.add(IconButton(
-                icon: Icon(Icons.delete),
-                iconSize: 35,
-                onPressed: () => deleteSelected(context)));
+          icon: Icon(Icons.delete),
+          iconSize: 35,
+          onPressed: () => deleteSelected(context)));
     }
     actions.add(SizedBox(
-              width: 10,
-            ));
+      width: 10,
+    ));
     return Scaffold(
       //key: scaffoldKey,
       drawer: AppDrawer('/tracker'),
