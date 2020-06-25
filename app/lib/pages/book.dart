@@ -23,14 +23,13 @@ class BookPage extends StatelessWidget {
           appBar: AppBar(
             title: Text('BooK'),
           ),
-          body: Center(child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-            Text('ToDo'),
-            Text('size.quarter'),
-            Text('BooK')
-          ],),
-        ),);
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [Text('ToDo'), Text('size.quarter'), Text('BooK')],
+            ),
+          ),
+        );
       },
     );
   }

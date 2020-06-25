@@ -23,6 +23,31 @@ Product findProductById(List<Product> products, String id) {
 }
 
 class TrackerPageState extends State<TrackerPage> {
+  Map<String, Meal> selected = Map<String, Meal>();
+
+  addToSelected(Meal meal) {
+    setState(() {
+      if (selected.containsKey(meal.id)) {
+        selected.remove(meal.id);
+      } else {
+        selected[meal.id] = meal;
+      }
+    });
+  }
+
+  editSelected(BuildContext context){
+
+  }
+
+  deleteSelected(BuildContext context) {
+    CollectionModel<Meal> mealsModel =
+        Provider.of<CollectionModel<Meal>>(context, listen: false);
+    selected.forEach((key, value) {
+      mealsModel.remove(key);
+    });
+    selected.clear();
+  }
+
   @override
   Widget build(BuildContext context) {
     CollectionModel<Meal> mealsModel =
@@ -33,41 +58,59 @@ class TrackerPageState extends State<TrackerPage> {
     CollectionModel<Product> productsModel =
         Provider.of<CollectionModel<Product>>(context);
     List<Meal> mymeals = mealsModel.records;
-    List<Product> products = productsModel.records;
+    List<Widget> actions = [];
+    if(selected.length == 1){
+      actions.add(IconButton(
+                icon: Icon(Icons.edit),
+                iconSize: 35,
+                onPressed: () => editSelected(context)));
+    }
+    if(selected.length > 0){
+      actions.add(IconButton(
+                icon: Icon(Icons.delete),
+                iconSize: 35,
+                onPressed: () => deleteSelected(context)));
+    }
+    actions.add(SizedBox(
+              width: 10,
+            ));
     return Scaffold(
       //key: scaffoldKey,
       drawer: AppDrawer('/tracker'),
       appBar: AppBar(
+          actions: actions,
           title: new Theme(
-        data: Theme.of(context),
-        child: new Builder(
-          builder: (context) => GestureDetector(
-            child: Column(children: <Widget>[
-              Text('Diary'),
-              Text(
-                DateFormat('dd.MM.yyyy').format(_dateTime),
-                style: TextStyle(fontSize: 20.0),
+            data: Theme.of(context),
+            child: new Builder(
+              builder: (context) => GestureDetector(
+                child: Column(children: <Widget>[
+                  Text('Diary'),
+                  Text(
+                    DateFormat('dd.MM.yyyy').format(_dateTime),
+                    style: TextStyle(fontSize: 20.0),
+                  ),
+                ]),
+                onTap: () => showDatePicker(
+                        context: context,
+                        initialDate:
+                            _dateTime == null ? DateTime.now() : _dateTime,
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(2021))
+                    .then((value) => {
+                          if (value != null)
+                            {
+                              mealsModel.setFilters([
+                                WhereFilter('startTs', 'time',
+                                    isGreaterThanOrEqualTo:
+                                        getDateStartTs(value)),
+                                WhereFilter('endTs', 'time',
+                                    isLessThanOrEqualTo: getDateEndTs(value)),
+                              ])
+                            }
+                        }),
               ),
-            ]),
-            onTap: () => showDatePicker(
-                    context: context,
-                    initialDate: _dateTime == null ? DateTime.now() : _dateTime,
-                    firstDate: DateTime(2001),
-                    lastDate: DateTime(2021))
-                .then((value) => {
-                      if (value != null)
-                        {
-                          mealsModel.setFilters([
-                            WhereFilter('startTs', 'time',
-                                isGreaterThanOrEqualTo: getDateStartTs(value)),
-                            WhereFilter('endTs', 'time',
-                                isLessThanOrEqualTo: getDateEndTs(value)),
-                          ])
-                        }
-                    }),
-          ),
-        ),
-      )),
+            ),
+          )),
       body: Container(
           child: CustomScrollView(
         slivers: <Widget>[
@@ -149,59 +192,52 @@ class TrackerPageState extends State<TrackerPage> {
                 /// uncomment the following line:
                 /// if (index > n) return null;
                 Meal meal = mymeals[index];
-                return Container(
-                    height: 90.0,
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      children: <Widget>[
-                        Container(
-                            width: 90.0,
-                            height: 90.0,
-                            child: Center(
-                              child: Text('*'),
-                            )),
-                        Expanded(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(findProductById(products, meal?.productID)
-                                        ?.name ??
-                                    ''),
-                                Text(
-                                    'Б: ' + '' + ', Ж: ' + '0' + ', У: ' + '0'),
-                                Text('0' + ' kkal')
-                              ]),
-                        ),
-                        Container(
-                            width: 90.0,
-                            height: 90.0,
-                            child: Center(
-                              child: Text('0' + 'g'),
-                            )),
-                      ],
-                    ));
-                /*
-                return ListTile(
-                  /*
-                  leading: Expanded(
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Icon(Icons.label),
-                    ),
-                  ),
-                  */
-                  trailing: Text(meal.m + 'g'),
-                  title: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(meal.product),
-                        Text('Б: '+meal.pg+', Ж: '+meal.fg+', У: ' + meal.cg),
-                        Text(meal.kkal + ' kkal')
-                      ]),
+                return GestureDetector(
+                  child: Container(
+                      color: selected.containsKey(meal.id)
+                          ? Colors.yellow[200]
+                          : Colors.white,
+                      height: 90.0,
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                              width: 90.0,
+                              height: 90.0,
+                              child: Center(
+                                child: Icon(Icons.fastfood),
+                              )),
+                          Expanded(
+                            child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(meal.name),
+                                  Text('P: ' +
+                                      meal.protein.toStringAsFixed(2) +
+                                      ', F: ' +
+                                      meal.fat.toStringAsFixed(2) +
+                                      ', C: ' +
+                                      meal.carb.toStringAsFixed(2)),
+                                  Text('Sug: ' +
+                                      meal.sugar.toStringAsFixed(2) +
+                                      ', Fib: ' +
+                                      meal.fibers.toStringAsFixed(2)),
+                                  Text(meal.kkal.toStringAsFixed(0) + ' kkal')
+                                ]),
+                          ),
+                          Container(
+                              width: 90.0,
+                              height: 90.0,
+                              child: Center(
+                                child: Text(meal?.weight?.toStringAsFixed(2) ??
+                                    "0" + ' g'),
+                              )),
+                        ],
+                      )),
+                  onTap: () => addToSelected(meal),
                 );
-                */
               },
 
               /// Set childCount to limit no.of items

@@ -146,6 +146,26 @@ class CollectionModel<T> extends ChangeNotifier {
     }
   }
 
+  Future remove(String id) async {
+    await api.removeDocument(id);
+    return;
+  }
+
+  Future update(OrmRecord data, String id) async {
+    await api.updateDocument(data.toMap(), id);
+    return;
+  }
+
+  Future addRecord(OrmRecord data) async {
+    await api.addDocument(data.toMap());
+    return;
+  }
+
+  Future addRecordWithId(OrmRecord data, String id) async {
+    await api.addDocumentWithId(data.toMap(), id);
+    return;
+  }
+
   @override
   void dispose() {
     subscription.cancel();

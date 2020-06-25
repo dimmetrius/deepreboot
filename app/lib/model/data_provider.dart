@@ -1,4 +1,30 @@
 enum WeightUnit { G, KG, LBS }
+WeightUnit parseWeightUnit(String wu) {
+  switch (wu) {
+    case 'G':
+      return WeightUnit.G;
+    case 'KG':
+      return WeightUnit.KG;
+    case 'LBS':
+      return WeightUnit.LBS;
+    default:
+      return null;
+  }
+}
+
+String weightUnitToStr(WeightUnit wu) {
+  switch (wu) {
+    case WeightUnit.G:
+      return 'G';
+    case WeightUnit.KG:
+      return 'KG';
+    case WeightUnit.LBS:
+      return 'LBS';
+    default:
+      return null;
+  }
+}
+
 enum RecType { User, Manufacturer, Product, ReceiptEntry, Receipt, Meal }
 
 abstract class OrmRecord {
@@ -31,6 +57,11 @@ class Manufacturer implements OrmRecord {
   }
 }
 
+double toDouble(dynamic i) {
+  String _i = i.toString();
+  return double.tryParse(_i) ?? 0.0;
+}
+
 class Product implements OrmRecord {
   Product(
       {this.id,
@@ -48,12 +79,12 @@ class Product implements OrmRecord {
     id = snapshot['id'] ?? '';
     name = snapshot['name'] ?? '';
     manufacturerID = snapshot['manufacturerID'] ?? '';
-    kkal = snapshot['kkal'] ?? 0;
-    protein = snapshot['protein'] ?? 0;
-    fat = snapshot['fat'] ?? 0;
-    carb = snapshot['carb'] ?? 0;
-    sugar = snapshot['sugar'] ?? 0;
-    fibers = snapshot['fibers'] ?? 0;
+    kkal = toDouble(snapshot['kkal']);
+    protein = toDouble(snapshot['protein']);
+    fat = toDouble(snapshot['fat']);
+    carb = toDouble(snapshot['carb']);
+    sugar = toDouble(snapshot['sugar']);
+    fibers = toDouble(snapshot['fibers']);
     receiptID = snapshot['receiptID'] ?? '';
     creatorID = snapshot['creatorID'] ?? '';
   }
@@ -88,18 +119,12 @@ class Product implements OrmRecord {
 
 class ReceiptEntry implements OrmRecord {
   ReceiptEntry(
-      {this.id,
-      this.receiptID,
-      this.productID,
-      this.weight,
-      this.weightUnit = WeightUnit.G,
-      this.creatorID});
+      {this.id, this.receiptID, this.productID, this.weight, this.creatorID});
   ReceiptEntry.fromMap(Map snapshot) {
     id = snapshot["id"] ?? "";
     receiptID = snapshot["receiptID"] ?? "";
     productID = snapshot["productID"] ?? "";
     weight = snapshot["weight"] ?? 0;
-    weightUnit = snapshot["weightUnit"] ?? WeightUnit.G;
     creatorID = snapshot["creatorID"] ?? "";
   }
   Map<String, dynamic> toMap() {
@@ -108,7 +133,6 @@ class ReceiptEntry implements OrmRecord {
       "receiptID": receiptID,
       "productID": productID,
       "weight": weight,
-      "weightUnit": weightUnit,
       "creatorID": creatorID,
     };
   }
@@ -117,7 +141,6 @@ class ReceiptEntry implements OrmRecord {
   String receiptID;
   String productID;
   double weight;
-  WeightUnit weightUnit;
   String creatorID;
 }
 
@@ -133,7 +156,6 @@ class Receipt implements OrmRecord {
       this.sugar,
       this.fibers,
       this.weight,
-      this.weightUnit,
       this.creatorID});
   Receipt.fromMap(Map snapshot) {
     id = snapshot['id'] ?? "";
@@ -145,7 +167,6 @@ class Receipt implements OrmRecord {
     carb = snapshot['carb'] ?? 0;
     sugar = snapshot['sugar'] ?? 0;
     fibers = snapshot['fibers'] ?? 0;
-    weightUnit = snapshot['weightUnit'] ?? WeightUnit.G;
     creatorID = snapshot['creatorID'] ?? '';
   }
   Map<String, dynamic> toMap() {
@@ -159,7 +180,6 @@ class Receipt implements OrmRecord {
       "carb": carb,
       "sugar": sugar,
       "fibers": fibers,
-      "weightUnit": weightUnit,
       "creatorID": creatorID,
     };
   }
@@ -174,41 +194,65 @@ class Receipt implements OrmRecord {
   double sugar;
   double fibers;
   double weight;
-  WeightUnit weightUnit;
   String creatorID;
 }
 
 class Meal implements OrmRecord {
   Meal(
       {this.id,
+      this.name,
       this.time,
       this.productID,
       this.weight,
-      this.weightUnit,
+      this.kkal,
+      this.protein,
+      this.fat,
+      this.carb,
+      this.sugar,
+      this.fibers,
       this.creatorID});
   Meal.fromMap(Map snapshot) {
     id = snapshot["id"];
+    name = snapshot["name"] ?? "";
     time = snapshot["time"];
     productID = snapshot["productID"];
     weight = snapshot["weight"];
-    weightUnit = snapshot["weightUnit"];
+    kkal = snapshot['kkal'] ?? 0;
+    protein = snapshot['protein'] ?? 0;
+    fat = snapshot['fat'] ?? 0;
+    carb = snapshot['carb'] ?? 0;
+    sugar = snapshot['sugar'] ?? 0;
+    fibers = snapshot['fibers'] ?? 0;
     creatorID = snapshot["creatorID"];
   }
   Map<String, dynamic> toMap() {
     return {
       "id": id,
       "time": time,
+      "name": name,
       "productID": productID,
-      "weightUnit": weightUnit,
+      "weight": weight,
+      "kkal": kkal,
+      "protein": protein,
+      "fat": fat,
+      "carb": carb,
+      "sugar": sugar,
+      "fibers": fibers,
       "creatorID": creatorID,
     };
   }
 
   String id;
   int time;
+  String name;
   String productID;
   double weight;
-  WeightUnit weightUnit;
+  double kkal;
+  double protein;
+  double fat;
+  double carb;
+  double sugar;
+  double fibers;
   String creatorID;
 }
 
@@ -253,4 +297,3 @@ class JsonMeal {
     return M;
   }
 }
-

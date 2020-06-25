@@ -19,9 +19,9 @@ class AuthModel extends ChangeNotifier {
     userAuthSub = _auth.onAuthStateChanged.listen((newUser) {
       print('AuthProvider - FirebaseAuth - onAuthStateChanged - $newUser');
       user = newUser;
-      if (user == null){
+      if (user == null) {
         state = AuthModelState.UNAUTHORIZED;
-      }else{
+      } else {
         state = AuthModelState.AUTHORIZED;
       }
       print(['userID', user?.uid]);
