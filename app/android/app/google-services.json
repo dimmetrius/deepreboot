@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "290828295877-nvo93jr90lioamuoos51dlmv3kudqo8q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.deepreboot.app",
+            "certificate_hash": "fe9fdf5b9bf5fb55f8e56834e6673136542a0ab9"
+          }
+        },
+        {
           "client_id": "290828295877-tg5q2mri89sh3iom4mraaf5u61cdtslu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
