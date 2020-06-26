@@ -24,10 +24,19 @@ class AddMealPageState extends State<AddMealPage> {
             tabs: [
               Tab(text: 'ALL'),
               Tab(text: 'PRESETS'),
-              Tab(text: 'MY'),
+              Tab(text: 'RECEIPTS'),
             ],
           ),
-          title: Text('Product list'),
+          title: Text('PRODUCTS'),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.add),
+              iconSize: 35,
+              onPressed: () {
+                Navigator.of(context).pushNamed('/addproduct', arguments:null);
+              },
+            )
+          ],
         ),
         body: TabBarView(
           children: [
@@ -81,6 +90,9 @@ class AddMealPageState extends State<AddMealPage> {
                       onTap: () {
                         showEditMealDialog(context, p, null);
                       },
+                      onLongPress: (){
+                        Navigator.of(context).pushNamed('/addproduct', arguments: p);
+                      },
                     );
                     /*
                 return ListTile(
@@ -110,8 +122,8 @@ class AddMealPageState extends State<AddMealPage> {
                 )),
               ],
             ),
-            Icon(Icons.directions_transit),
-            Icon(Icons.directions_bike),
+            Center(child: Text('IN DEVELOPMENT')),
+            Center(child: Text('IN DEVELOPMENT')),
           ],
         ),
       ),

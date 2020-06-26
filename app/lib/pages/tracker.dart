@@ -31,6 +31,8 @@ Meal findMealById(List<Meal> meals, String id) {
 class TrackerPageState extends State<TrackerPage> {
   Map<String, Meal> selected = Map<String, Meal>();
 
+  bool isProcSum = false;
+
   addToSelected(Meal meal) {
     setState(() {
       if (selected.containsKey(meal.id)) {
@@ -65,12 +67,31 @@ class TrackerPageState extends State<TrackerPage> {
         Provider.of<CollectionModel<Product>>(context);
     List<Product> products = productsModel.records;
     List<Meal> mymeals = mealsModel.records;
+    double sumP = 0, sumF = 0, sumC = 0, sumK = 0, sumFib = 0, sumSug = 0;
+    mymeals.forEach((element) {
+      sumP += element.protein ?? 0;
+      sumF += element.fat ?? 0;
+      sumC += element.carb ?? 0;
+      sumK += element.kkal ?? 0;
+      sumSug += element.sugar ?? 0;
+      sumFib += element.fibers ?? 0;
+    });
+
+    double sumKKAL = sumP*4 + sumF*9 + sumC*4;
+    double percP = sumP*4/(sumKKAL/100);
+    double percF = sumF*4/(sumKKAL/100);
+    double percC = sumC*4/(sumKKAL/100);
+
+    String pStr = isProcSum ? (strNumFromDouble(percP) + ' %') : (strNumFromDouble(sumP) + ' g');
+    String fStr = isProcSum ? (strNumFromDouble(percF) + ' %') : (strNumFromDouble(sumF) + ' g');
+    String cStr = isProcSum ? (strNumFromDouble(percC) + ' %') : (strNumFromDouble(sumC) + ' g');
+
     List<Widget> actions = [];
     if (selected.length == 1) {
       actions.add(IconButton(
           icon: Icon(Icons.edit),
           iconSize: 35,
-          onPressed: (){
+          onPressed: () {
             String mealID = selected.keys.first;
             Meal meal = findMealById(mymeals, mealID);
             Product product = findProductById(products, meal.productID);
@@ -134,7 +155,8 @@ class TrackerPageState extends State<TrackerPage> {
             floating: true,
             // Display a placeholder widget to visualize the shrinking size.
             flexibleSpace: Container(
-              child: Container(
+              child: GestureDetector(
+                child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 20.0),
                 alignment: FractionalOffset.center,
                 child: SingleChildScrollView(
@@ -148,7 +170,7 @@ class TrackerPageState extends State<TrackerPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('100%'),
+                              Text(pStr),
                               Text('Prots', style: TextStyle(fontSize: 10.0))
                             ],
                           ),
@@ -159,7 +181,7 @@ class TrackerPageState extends State<TrackerPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('100%'),
+                              Text(fStr),
                               Text('Fats', style: TextStyle(fontSize: 10.0))
                             ],
                           ),
@@ -170,7 +192,7 @@ class TrackerPageState extends State<TrackerPage> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text('100%'),
+                              Text(cStr),
                               Text('Carbs', style: TextStyle(fontSize: 10.0))
                             ],
                           ),
@@ -182,12 +204,24 @@ class TrackerPageState extends State<TrackerPage> {
                     SizedBox(
                       height: 10,
                     ),
+                    /*
+                    Row(children: [
+                      Text('Sugars: ' + strNumFromDouble(sumSug)),
+                      Text('Fibers: ' + strNumFromDouble(sumFib))
+                    ],),
+                    */
                     Text(
-                      'SUM KKAL',
+                      sumK.toStringAsFixed(0) + ' KKAL',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     )
                   ],
                 )),
+              ),
+              onTap: (){
+                setState(() {
+                  isProcSum = !isProcSum;
+                });
+              },
               ),
             ),
             // Make the initial height of the SliverAppBar larger than normal.
@@ -243,8 +277,9 @@ class TrackerPageState extends State<TrackerPage> {
                               width: 90.0,
                               height: 90.0,
                               child: Center(
-                                child: Text(meal?.weight?.toStringAsFixed(2) ??
-                                    "0" + ' g'),
+                                child: Text(
+                                    (meal?.weight?.toStringAsFixed(0) ?? "0") +
+                                        ' g'),
                               )),
                         ],
                       )),

@@ -2,6 +2,7 @@ import 'package:app/model/auth_model.dart';
 import 'package:app/model/data_provider.dart';
 import 'package:app/model/collection_model.dart';
 import 'package:app/pages/add_meal.dart';
+import 'package:app/pages/add_product.dart';
 import 'package:app/pages/book.dart';
 import 'package:app/pages/home.dart';
 import 'package:app/pages/login_code.dart';
@@ -55,6 +56,7 @@ class MyApp extends StatelessWidget {
         '/tracker': (BuildContext context) => TrackerPage(),
         '/settings': (BuildContext context) => SettingsPage(),
         '/addmeal': (BuildContext context) => AddMealPage(),
+        '/addproduct': (BuildContext context) => AddProductPage(),
       },
     );
   }
