@@ -79,7 +79,7 @@ class TrackerPageState extends State<TrackerPage> {
 
     double sumKKAL = sumP*4 + sumF*9 + sumC*4;
     double percP = sumP*4/(sumKKAL/100);
-    double percF = sumF*4/(sumKKAL/100);
+    double percF = sumF*9/(sumKKAL/100);
     double percC = sumC*4/(sumKKAL/100);
 
     String pStr = isProcSum ? (strNumFromDouble(percP) + ' %') : (strNumFromDouble(sumP) + ' g');
