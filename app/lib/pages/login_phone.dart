@@ -14,8 +14,10 @@ class LoginPagePhoneState extends State<LoginPagePhone> {
   final TextEditingController _phoneNumberController = TextEditingController();
 
   checkAuthState(AuthModel auth, BuildContext context) {
-    print(['login_phone', auth.verificationId]);
-    if (auth.verificationId != null) {
+    if (auth.state == AuthModelState.AUTHORIZED) {
+      print('home isAuthenticated');
+      Navigator.of(context).pushReplacementNamed('/tracker');
+    }else if (auth.verificationId != null) {
       Navigator.of(context).pushReplacementNamed('/code');
     }
   }
