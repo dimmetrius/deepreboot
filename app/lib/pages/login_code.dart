@@ -1,6 +1,6 @@
 import 'package:app/model/auth_model.dart';
 import 'package:flutter/material.dart';
-import 'package:app/utils/AppTheme.dart';
+import 'package:app/utils/app_theme.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 

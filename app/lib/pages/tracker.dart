@@ -1,6 +1,7 @@
 import 'package:app/components/app_drawer.dart';
 import 'package:app/model/collection_model.dart';
 import 'package:app/model/data_provider.dart';
+import 'package:app/utils/add_meal_dialog.dart';
 import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -15,11 +16,16 @@ class TrackerPage extends StatefulWidget {
 // final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 Product findProductById(List<Product> products, String id) {
   Product p = products.firstWhere((element) {
-    print(element.id);
     return element.id == id;
   }, orElse: () => null);
-  print([id, p?.id, p?.name]);
   return p;
+}
+
+Meal findMealById(List<Meal> meals, String id) {
+  Meal m = meals.firstWhere((element) {
+    return element.id == id;
+  }, orElse: () => null);
+  return m;
 }
 
 class TrackerPageState extends State<TrackerPage> {
@@ -35,7 +41,9 @@ class TrackerPageState extends State<TrackerPage> {
     });
   }
 
-  editSelected(BuildContext context) {}
+  editSelected(BuildContext context, Meal meal, Product product) {
+    showEditMealDialog(context, product, meal);
+  }
 
   deleteSelected(BuildContext context) {
     CollectionModel<Meal> mealsModel =
@@ -55,13 +63,19 @@ class TrackerPageState extends State<TrackerPage> {
         DateTime.fromMillisecondsSinceEpoch(qf.isGreaterThanOrEqualTo);
     CollectionModel<Product> productsModel =
         Provider.of<CollectionModel<Product>>(context);
+    List<Product> products = productsModel.records;
     List<Meal> mymeals = mealsModel.records;
     List<Widget> actions = [];
     if (selected.length == 1) {
       actions.add(IconButton(
           icon: Icon(Icons.edit),
           iconSize: 35,
-          onPressed: () => editSelected(context)));
+          onPressed: (){
+            String mealID = selected.keys.first;
+            Meal meal = findMealById(mymeals, mealID);
+            Product product = findProductById(products, meal.productID);
+            editSelected(context, meal, product);
+          }));
     }
     if (selected.length > 0) {
       actions.add(IconButton(

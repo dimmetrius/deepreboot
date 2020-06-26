@@ -10,7 +10,7 @@ import 'package:app/pages/profile.dart';
 import 'package:app/pages/settings.dart';
 import 'package:app/pages/sizes.dart';
 import 'package:app/pages/tracker.dart';
-import 'package:app/utils/AppTheme.dart';
+import 'package:app/utils/app_theme.dart';
 import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
