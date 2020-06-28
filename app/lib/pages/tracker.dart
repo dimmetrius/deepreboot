@@ -35,7 +35,7 @@ class TrackerPageState extends State<TrackerPage> {
   bool selectMode = false;
   bool isProcSum = false;
 
-  addToSelected(Meal meal) {
+  void addToSelected(Meal meal) {
     setState(() {
       if (selected.containsKey(meal.id)) {
         selected.remove(meal.id);
@@ -43,6 +43,13 @@ class TrackerPageState extends State<TrackerPage> {
         selected[meal.id] = meal;
       }
       selectMode = selected.length > 0;
+    });
+  }
+
+  void cancelSelectMode() {
+    setState(() {
+      selected.clear();
+      selectMode = false;
     });
   }
 
@@ -284,18 +291,17 @@ class TrackerPageState extends State<TrackerPage> {
                             _dateTime == null ? DateTime.now() : _dateTime,
                         firstDate: DateTime(2001),
                         lastDate: DateTime(2021))
-                    .then((value) => {
-                          if (value != null)
-                            {
-                              mealsModel.setFilters([
-                                WhereFilter('startTs', 'time',
-                                    isGreaterThanOrEqualTo:
-                                        getDateStartTs(value)),
-                                WhereFilter('endTs', 'time',
-                                    isLessThanOrEqualTo: getDateEndTs(value)),
-                              ])
-                            }
-                        }),
+                    .then((value) {
+                  if (value != null) {
+                    cancelSelectMode();
+                    mealsModel.setFilters([
+                      WhereFilter('startTs', 'time',
+                          isGreaterThanOrEqualTo: getDateStartTs(value)),
+                      WhereFilter('endTs', 'time',
+                          isLessThanOrEqualTo: getDateEndTs(value)),
+                    ]);
+                  }
+                }),
               ),
             ),
           )),
