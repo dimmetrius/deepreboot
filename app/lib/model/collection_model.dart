@@ -120,11 +120,12 @@ class CollectionModel<T extends OrmRecord> extends ChangeNotifier {
     fetch();
   }
 
-  updateFilter(QueryFilter f){
-    int nameIndex = this.filters.indexWhere((element) => element.name == f.name);
-    if(nameIndex >= 0){
+  updateFilter(QueryFilter f) {
+    int nameIndex =
+        this.filters.indexWhere((element) => element.name == f.name);
+    if (nameIndex >= 0) {
       this.filters[nameIndex] = f;
-    }else{
+    } else {
       this.filters.add(f);
     }
   }
@@ -185,9 +186,9 @@ class CollectionModel<T extends OrmRecord> extends ChangeNotifier {
   List<T> records = new List<T>();
 
   T findRecordById(String id) {
-  T m = records.firstWhere((T element) {
-    return element.id == id;
-  }, orElse: () => null);
-  return m;
-}
+    T m = records.firstWhere((T element) {
+      return element.id == id;
+    }, orElse: () => null);
+    return m;
+  }
 }

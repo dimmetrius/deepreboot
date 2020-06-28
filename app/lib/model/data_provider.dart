@@ -62,10 +62,20 @@ double toDouble(dynamic i) {
   String _i = i.toString();
   return double.tryParse(_i) ?? 0.0;
 }
-String strNumFromDouble(double n, [int digits = 0]){
+
+String strNumFromDouble(double n, [int digits = 0]) {
   double _n = n ?? 0;
+  _n = _n.isNaN ? 0 : _n;
   return _n.toStringAsFixed(digits);
 }
+
+List<String> mealNums = [
+  '1. BREAKFAST',
+  '2. BRUNCH',
+  '3. LUNCH',
+  '4. DINNER',
+  '5. SUPPER'
+];
 
 class Product implements OrmRecord {
   Product(
@@ -207,6 +217,7 @@ class Meal implements OrmRecord {
       {this.id,
       this.name,
       this.time,
+      this.num,
       this.productID,
       this.weight,
       this.kkal,
@@ -220,6 +231,7 @@ class Meal implements OrmRecord {
     id = snapshot["id"];
     name = snapshot["name"] ?? "";
     time = snapshot["time"];
+    num = snapshot["num"] ?? 0;
     productID = snapshot["productID"];
     weight = snapshot["weight"];
     kkal = snapshot['kkal'] ?? 0;
@@ -235,6 +247,7 @@ class Meal implements OrmRecord {
       "id": id,
       "time": time,
       "name": name,
+      "num": num,
       "productID": productID,
       "weight": weight,
       "kkal": kkal,
@@ -250,6 +263,7 @@ class Meal implements OrmRecord {
   String id;
   int time;
   String name;
+  int num;
   String productID;
   double weight;
   double kkal;

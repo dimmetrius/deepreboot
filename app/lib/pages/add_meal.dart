@@ -16,6 +16,8 @@ class AddMealPageState extends State<AddMealPage> {
     CollectionModel<Product> productsModel =
         Provider.of<CollectionModel<Product>>(context);
     List<Product> products = productsModel.records;
+    Map args = ModalRoute.of(context).settings.arguments ?? {};
+    int maxNum = args['maxNum'] ?? 0;
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -33,7 +35,7 @@ class AddMealPageState extends State<AddMealPage> {
               icon: Icon(Icons.add),
               iconSize: 35,
               onPressed: () {
-                Navigator.of(context).pushNamed('/addproduct', arguments:null);
+                Navigator.of(context).pushNamed('/addproduct', arguments: null);
               },
             )
           ],
@@ -88,10 +90,11 @@ class AddMealPageState extends State<AddMealPage> {
                             ],
                           )),
                       onTap: () {
-                        showEditMealDialog(context, p, null);
+                        showEditMealDialog(context, p, null, maxNum);
                       },
-                      onLongPress: (){
-                        Navigator.of(context).pushNamed('/addproduct', arguments: p);
+                      onLongPress: () {
+                        Navigator.of(context)
+                            .pushNamed('/addproduct', arguments: p);
                       },
                     );
                     /*

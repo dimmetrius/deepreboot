@@ -17,24 +17,31 @@ class AddProductPageState extends State<AddProductPage> {
 
   @override
   Widget build(BuildContext context) {
-        bool isNew = true;
+    bool isNew = true;
     CollectionModel<Product> productsModel =
         Provider.of<CollectionModel<Product>>(context);
     AuthModel auth = Provider.of<AuthModel>(context);
     Product product = ModalRoute.of(context).settings.arguments;
-    if(product != null){
+    if (product != null) {
       isNew = false;
-    }else{
+    } else {
       product = Product();
     }
 
-    TextEditingController _nameController = TextEditingController(text: product.name ?? '');
-    TextEditingController _protController = TextEditingController(text: strNumFromDouble(product.protein));
-    TextEditingController _fatController = TextEditingController(text: strNumFromDouble(product.fat));
-    TextEditingController _carbController = TextEditingController(text: strNumFromDouble(product.carb));
-    TextEditingController _sugController = TextEditingController(text: strNumFromDouble(product.sugar));
-    TextEditingController _fibController = TextEditingController(text: strNumFromDouble(product.fibers));
-    TextEditingController _kkalController = TextEditingController(text: strNumFromDouble(product.kkal));
+    TextEditingController _nameController =
+        TextEditingController(text: product.name ?? '');
+    TextEditingController _protController =
+        TextEditingController(text: strNumFromDouble(product.protein));
+    TextEditingController _fatController =
+        TextEditingController(text: strNumFromDouble(product.fat));
+    TextEditingController _carbController =
+        TextEditingController(text: strNumFromDouble(product.carb));
+    TextEditingController _sugController =
+        TextEditingController(text: strNumFromDouble(product.sugar));
+    TextEditingController _fibController =
+        TextEditingController(text: strNumFromDouble(product.fibers));
+    TextEditingController _kkalController =
+        TextEditingController(text: strNumFromDouble(product.kkal));
 
     return Scaffold(
         appBar: AppBar(
@@ -172,7 +179,8 @@ class AddProductPageState extends State<AddProductPage> {
                               if (_formKey.currentState.validate()) {
                                 product
                                   ..id = product.id ?? Uuid().v4()
-                                  ..creatorID = product.creatorID ?? auth.user.uid
+                                  ..creatorID =
+                                      product.creatorID ?? auth.user.uid
                                   ..name = _nameController.text
                                   ..protein = toDouble(_protController.text)
                                   ..fat = toDouble(_fatController.text)
@@ -181,9 +189,10 @@ class AddProductPageState extends State<AddProductPage> {
                                   ..fibers = toDouble(_fibController.text)
                                   ..kkal = toDouble(_kkalController.text);
 
-                                if(isNew){
-                                  productsModel.addRecordWithId(product, product.id);
-                                }else{
+                                if (isNew) {
+                                  productsModel.addRecordWithId(
+                                      product, product.id);
+                                } else {
                                   productsModel.update(product, product.id);
                                 }
 

@@ -22,7 +22,7 @@ final MaterialColor materialColor = MaterialColor(
 
 final ThemeData themeData = ThemeData(
   primarySwatch: materialColor,
-  primaryColor: Color(_greenPrimary),
-  accentColor: Color(_yellowAccentColor),
+  primaryColor: greenPrimary,
+  accentColor: yellowAccentColor,
   visualDensity: VisualDensity.adaptivePlatformDensity,
 );

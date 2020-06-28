@@ -17,7 +17,7 @@ class LoginPagePhoneState extends State<LoginPagePhone> {
     if (auth.state == AuthModelState.AUTHORIZED) {
       print('home isAuthenticated');
       Navigator.of(context).pushReplacementNamed('/tracker');
-    }else if (auth.verificationId != null) {
+    } else if (auth.verificationId != null) {
       Navigator.of(context).pushReplacementNamed('/code');
     }
   }
