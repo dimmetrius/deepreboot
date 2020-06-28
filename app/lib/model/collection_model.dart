@@ -61,7 +61,7 @@ class WhereFilter extends QueryFilter {
   }
 }
 
-class CollectionModel<T> extends ChangeNotifier {
+class CollectionModel<T extends OrmRecord> extends ChangeNotifier {
   AuthModel authModel;
   Api api;
   Query query;
@@ -120,6 +120,15 @@ class CollectionModel<T> extends ChangeNotifier {
     fetch();
   }
 
+  updateFilter(QueryFilter f){
+    int nameIndex = this.filters.indexWhere((element) => element.name == f.name);
+    if(nameIndex >= 0){
+      this.filters[nameIndex] = f;
+    }else{
+      this.filters.add(f);
+    }
+  }
+
   QueryFilter getFilterByName(String name) {
     return filters?.firstWhere((element) {
       return name == element.name;
@@ -174,4 +183,11 @@ class CollectionModel<T> extends ChangeNotifier {
   }
 
   List<T> records = new List<T>();
+
+  T findRecordById(String id) {
+  T m = records.firstWhere((T element) {
+    return element.id == id;
+  }, orElse: () => null);
+  return m;
+}
 }

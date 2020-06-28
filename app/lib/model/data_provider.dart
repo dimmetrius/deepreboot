@@ -30,6 +30,7 @@ enum RecType { User, Manufacturer, Product, ReceiptEntry, Receipt, Meal }
 abstract class OrmRecord {
   OrmRecord.fromMap(Map snapshot);
   Map<String, dynamic> toMap();
+  String id;
 }
 
 class User implements OrmRecord {
