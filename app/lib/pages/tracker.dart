@@ -117,7 +117,7 @@ class TrackerPageState extends State<TrackerPage> {
                         cStr +
                         ')=' +
                         sumK.toStringAsFixed(0) +
-                        ' kkal',
+                        ' kCal',
                   )
                 ],
               ),
@@ -168,7 +168,7 @@ class TrackerPageState extends State<TrackerPage> {
                             children: [
                               Text((meal?.weight?.toStringAsFixed(0) ?? "0") +
                                   ' g'),
-                              Text(meal.kkal.toStringAsFixed(0) + ' kkal')
+                              Text(meal.kkal.toStringAsFixed(0) + ' kCal')
                             ],
                           )),
                     ],
@@ -366,7 +366,7 @@ class TrackerPageState extends State<TrackerPage> {
                     ],),
                     */
                       Text(
-                        sumK.toStringAsFixed(0) + ' KKAL',
+                        sumK.toStringAsFixed(0) + ' kCal',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       )
                     ],
