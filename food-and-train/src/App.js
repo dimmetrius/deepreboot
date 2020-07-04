@@ -1,11 +1,6 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import ReactPivot from './rp/index';
-import data from './food.csv.json';
-
-const usersData = {
-  'dimmetrius': data,
-}
 
 var Emitter = require('wildemitter')
 
@@ -195,6 +190,18 @@ const calculations = [
   */
 ]
 function App() {
+  const [usersData, setUsersData] = useState('');
+  useEffect(() => {
+    fetch('https://deepreboot.firebaseio.com/food_csv.json')
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      setUsersData({
+        "dimmetrius": data,
+      });
+    });
+  }, []);
   const search = (window.location.search || '').replace('?','');
   const pairs = search.split('&');
   const obj = pairs.reduce((sum, el) => {
