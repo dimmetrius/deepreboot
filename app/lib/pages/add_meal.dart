@@ -1,5 +1,5 @@
+import 'package:app/core/core.dart';
 import 'package:app/model/collection_model.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:app/utils/add_meal_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

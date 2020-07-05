@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:app/components/app_drawer.dart';
+import 'package:app/core/core.dart';
 import 'package:app/model/collection_model.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:app/utils/add_meal_dialog.dart';
+import 'package:app/utils/double_utils.dart';
 import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -1,6 +1,6 @@
+import 'package:app/core/core.dart';
 import 'package:app/model/auth_model.dart';
 import 'package:app/model/collection_model.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:app/utils/app_theme.dart';
 import 'package:app/utils/time_utils.dart';
 import 'package:flutter/material.dart';

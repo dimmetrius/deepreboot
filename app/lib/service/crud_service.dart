@@ -1,5 +1,5 @@
+import 'package:app/core/core.dart';
 import 'package:app/service/api.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CRUDService {
