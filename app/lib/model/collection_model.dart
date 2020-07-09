@@ -1,7 +1,7 @@
 import 'dart:async';
 
+import 'package:app/core/core.dart';
 import 'package:app/model/auth_model.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:app/service/api.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

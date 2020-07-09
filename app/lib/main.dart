@@ -1,5 +1,5 @@
+import 'package:app/core/core.dart';
 import 'package:app/model/auth_model.dart';
-import 'package:app/model/data_provider.dart';
 import 'package:app/model/collection_model.dart';
 import 'package:app/pages/add_meal.dart';
 import 'package:app/pages/add_product.dart';
@@ -28,12 +28,16 @@ void main() {
         isLessThanOrEqualTo: getDateEndTs(DateTime.now())),
   ]);
   CollectionModel<Receipt> receiptsModel = CollectionModel<Receipt>(authModel);
+  CollectionModel<ReceiptEntry> receiptsEntriesModel =
+      CollectionModel<ReceiptEntry>(authModel);
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: authModel),
       ChangeNotifierProvider.value(value: productsModel),
       ChangeNotifierProvider.value(value: mealsModel),
       ChangeNotifierProvider.value(value: receiptsModel),
+      ChangeNotifierProvider.value(value: receiptsEntriesModel),
     ],
     child: MyApp(),
   ));

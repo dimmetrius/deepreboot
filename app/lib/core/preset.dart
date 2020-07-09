@@ -1,37 +1,35 @@
 import 'package:app/core/orm_record.dart';
 
-class ReceiptEntry implements OrmRecord {
-  ReceiptEntry(
+class Preset implements OrmRecord {
+  Preset(
       {this.id,
-      this.receiptID,
-      this.productID,
-      this.weight,
+      this.name,
+      this.description,
       this.kkal,
       this.protein,
       this.fat,
       this.carb,
       this.sugar,
       this.fibers,
+      this.weight,
       this.creatorID});
-  ReceiptEntry.fromMap(Map snapshot) {
-    id = snapshot["id"] ?? "";
-    receiptID = snapshot["receiptID"] ?? "";
-    productID = snapshot["productID"] ?? "";
-    weight = snapshot["weight"] ?? 0;
+  Preset.fromMap(Map snapshot) {
+    id = snapshot['id'] ?? "";
+    name = snapshot["name"] ?? "";
+    description = snapshot["description"] ?? "";
     kkal = snapshot['kkal'] ?? 0;
     protein = snapshot['protein'] ?? 0;
     fat = snapshot['fat'] ?? 0;
     carb = snapshot['carb'] ?? 0;
     sugar = snapshot['sugar'] ?? 0;
     fibers = snapshot['fibers'] ?? 0;
-    creatorID = snapshot["creatorID"] ?? "";
+    creatorID = snapshot['creatorID'] ?? '';
   }
   Map<String, dynamic> toMap() {
     return {
       "id": id,
-      "receiptID": receiptID,
-      "productID": productID,
-      "weight": weight,
+      "name": name,
+      "description": description,
       "kkal": kkal,
       "protein": protein,
       "fat": fat,
@@ -43,14 +41,14 @@ class ReceiptEntry implements OrmRecord {
   }
 
   String id;
-  String receiptID;
-  String productID;
-  double weight;
+  String name;
+  String description;
   double kkal;
   double protein;
   double fat;
   double carb;
   double sugar;
   double fibers;
+  double weight;
   String creatorID;
 }
