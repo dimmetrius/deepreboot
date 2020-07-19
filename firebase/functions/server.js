@@ -1,6 +1,7 @@
 // require all dependencies to set up server
 const express = require('express');
-const {ApolloServer} = require('apollo-server-express');
+const {ApolloServer, UserInputError} = require('apollo-server-express');
+
 const typeDefs = require('./schema');
 // cors allows our server to accept requests from different origins
 const cors = require('cors');
@@ -10,15 +11,81 @@ const configureServer = () => {
   // use the cors middleware
   app.use(cors());
   // Very simple resolver that returns "world" for the hello query
+
+  app.use('/graphql', function(req, res, next) {
+    // console.log('Request URL:', req.originalUrl);
+    next();
+  });
+
   const resolvers = {
+    Product: {
+      creator: (parent, args, context, info) => {
+        console.log('USER_CREATOR');
+        return {
+          id: JSON.stringify({parent, args}),
+        };
+      },
+      /*
+      getDemo: (parent, args, context, info) => {
+        return {
+          id: JSON.stringify({parent, args}),
+        };
+      },
+      */
+    },
+    Food: {
+      __resolveType(book, context, info) {
+        if (book.isProduct) {
+          return 'Product';
+        }
+
+        if (book.isReceipt) {
+          return 'Receipt';
+        }
+
+        return null;
+      },
+    },
     Query: {
-      getGame: () => null,
-      products: (filters) => [],
+      products: (parent, args, context, info) => {
+        console.log('query.products');
+        if (args && args.where) {
+          args.where.forEach((_where) => {
+            if (_where.id && Object.keys(_where.id).length > 1) {
+              throw new UserInputError('Only one key expected: ' + Object.keys(_where.id).join(' or '), {
+                invalidArgs: Object.keys(args),
+              });
+            }
+          });
+        }
+        return [{
+          id: Math.random().toString(),
+          name: 'Name',
+          kkal: Math.random(),
+          protein: Math.random(),
+          fat: Math.random(),
+          carb: Math.random(),
+          sugar: Math.random(),
+          fibers: Math.random(),
+        }];
+      },
+      meals: () => [],
     },
   };
+
   const server = new ApolloServer({
     typeDefs,
     resolvers,
+    formatError: (err) => {
+      // Don't give the specific errors to the client.
+      if (err.message.startsWith('Wrong Arguments')) {
+        return new Error('Internal server error');
+      }
+      if (err && err.extensions && err.extensions.exception && err.extensions.exception.stacktrace) {
+        err.extensions.exception.stacktrace = undefined;
+      }
+      return err;
+    },
     context: ({req, res}) => {
       return {
         headers: req.headers,

@@ -1,8 +1,25 @@
 const {gql} = require('apollo-server-express');
+
+const filterGenerator = (tp) => {
+  return `
+  "where filter for ${tp} definition"
+  input ${tp}Filter {
+    isEqualTo: ${tp}
+    isLessThan: ${tp}
+    isLessThanOrEqualTo: ${tp}
+    isGreaterThan: ${tp}
+    isGreaterThanOrEqualTo: ${tp}
+    isInValues: [${tp}]
+  }
+  `;
+};
+
 const typeDefs = gql`
+
+# A type that describes the user
 type User {
   id: String!
-  login: String!
+  login: String
   name: String
   email: String
   phone: String
@@ -23,102 +40,82 @@ enum WeightUnit {
 
 type ReceiptEntry {
   id: String!
-  product: Product!
-  weight: Float
+  food: Food!
+  kkal: Float!
+  protein: Float!
+  fat: Float!
+  carb: Float!
+  sugar: Float!
+  weight: Float!
+  weightUnit: WeightUnit!
 }
 
 type Receipt {
   id: String!
+  ts: Int!
   name: String!
   description: String
-  kkal: Float
-  protein: Float
-  fat: Float
-  carb: Float
-  creator: User
-  weight: Float
-  weightUnit: WeightUnit
-  entries: [ReceiptEntry]
-  steps: [String]
+  kkal: Float!
+  protein: Float!
+  fat: Float!
+  carb: Float!
+  sugar: Float!
+  weight: Float!
+  weightUnit: WeightUnit!
+  entries: [ReceiptEntry]!
+  creator: User!
 }
 
+"A type that describes the Product"
 type Product {
   id: String!
+  ts: Int!
+  name: String!
   manufacturer: Manufacturer
-  kkal: Float
-  protein: Float
-  fat: Float
-  carb: Float
-  receipt: Receipt
-  creator: User
+  kkal: Float!
+  protein: Float!
+  fat: Float!
+  carb: Float!
+  sugar: Float!
+  fibers: Float!
+  creator: User!
 }
+
+union Food = Receipt | Product
 
 type Meal {
   id: String!
+  ts: Int!
+  name: String!
   time: Int
-  product: Product
+  kkal: Float!
+  protein: Float!
+  fat: Float!
+  carb: Float!
+  sugar: Float!
+  fibers: Float!
+  food: Food
   weight: Float
   weightUnit: WeightUnit
   user: User
 }
 
-type YesNoQuestion {
-  id: String!
-  text: String!
-  rightAns: YesNoAnswerEnum
+${filterGenerator('Float')}
+${filterGenerator('Int')}
+${filterGenerator('String')}
+
+input ProductsWhereFilter {
+  id: StringFilter
+  kkal: FloatFilter
 }
 
-enum YesNoAnswerEnum {
-  Yes
-  No
-}
-
-type YesNoAnswer {
-  id: String!
-  question: YesNoQuestion!
-}
-
-type FirstSecondQuestion {
-  id: String!
-  text: String!
-  firstDescr: String!
-  secondDescr: String!
-  picUrl1: String
-  picUrl2: String
-}
-
-enum FirstSecondAnswerEnum {
-  First
-  Second
-}
-
-type FirstSecondAnswer {
-  id: String!
-  question: FirstSecondQuestion
-  answer: FirstSecondAnswerEnum
-}
-
-union Question = YesNoQuestion
-union Answer = YesNoAnswer | FirstSecondAnswer
-
-type GameLevel {
-  id: String!
-  npp: Int
-  questions: [Question]
-  answers: [Answer]
-}
-
-type Game {
-  levels: [GameLevel]
-}
-
-input Filter {
-  key: String!
+input MealsWhereFilter {
+  id: StringFilter
 }
 
 type Query {
-  getGame : Game
-  products(filters: [Filter]) : [Product]
+  products(where: [ProductsWhereFilter]!) : [Product]
+  meals(where: [MealsWhereFilter]) : [Meal]
 }
 `;
 
