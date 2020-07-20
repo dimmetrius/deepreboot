@@ -9,19 +9,49 @@
       content="captcha"
     />
     <title>FOOD.Reboot</title>
-    <script src="https://www.google.com/recaptcha/api.js?render=6LcDXbMZAAAAAEl3jsttyUR2bC-jHWdIcihSY0Iw"></script>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-auth.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.16.1/firebase-analytics.js"></script>
+
     <script>
-      function onClick(e) {
-        // e.preventDefault();
-        grecaptcha.ready(function() {
-          grecaptcha.execute('6LcDXbMZAAAAAEl3jsttyUR2bC-jHWdIcihSY0Iw', {action: 'submit'}).then(function(token) {
-              console.log(token)
-          });
-        });
-      }
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDmqBvRdWn8LMbeCslPziuQ9SVmV3Gd_jY",
+        authDomain: "deepreboot.firebaseapp.com",
+        databaseURL: "https://deepreboot.firebaseio.com",
+        projectId: "deepreboot",
+        storageBucket: "deepreboot.appspot.com",
+        messagingSenderId: "290828295877",
+        appId: "1:290828295877:web:58871c4e906a4d50df9aac",
+        measurementId: "G-0JZEEW300C"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      firebase.analytics();
     </script>
   </head>
   <body>
-    <button onclick="onClick()">Кнопка</button>
+    <button id="sendCode">Send Code</button>
   </body>
+  <script>
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sendCode', {
+        'size': 'invisible',
+        'callback': function (recapchaToken) {
+          // reCAPTCHA solved, send recapchaToken and phone number to backend.
+          
+          // a REST call to your backend
+          console.log(recapchaToken);
+        }
+      });
+
+      // render the rapchaVerifier. 
+      window.recaptchaVerifier.render().then(function (widgetId) {
+        window.recaptchaWidgetId = widgetId;
+      });
+    </script>
 </html>

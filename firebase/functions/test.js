@@ -1,11 +1,11 @@
 const {google} = require('googleapis');
 
 // eslint-disable-next-line max-len
-const recaptchaToken = '03AGdBq25Sb7_x0aE975HN7UcnAixEQsssP_iuRGRWoL2lY7VSfvBfJZpWQAkVOAOPDg3HahbsgOI6hbShGHXSBNqIIODA2selirYIzC3s5V6BQM4sT8gcgqzWlmnaX3Sxz1W8o_atZKaGJ9kzYDuO2SLp6W7iBJIDQY4svaFVxrAx0A3k2NSYgkHkaW5YOT-m0A5RYOPjSriSP9Z_nyfGEUD9h2OF9Eyd4pOvC2CC7Yguo5FmOU716zQQlz1nrjopSIMSDkxk5REISuZxNL9kl3L2OO1LK5mkQxlfbBhK0zWbXV_8J1DRHdz6rh_bYM1Zl7aNhbuKzLtE9yfvbV3KZl7RB3gtf-pRa2WN16b2I2XWStBbaJ0xN50TlEM4sWHFypU1uRRaEC4H';
+const recaptchaToken = '03AGdBq272Yq1ZYjek9XCu1NyqBcucm0RsBV0rmmtuJyXm22ZUCaMM_yQl9eJ5cn910FffZ1hJCjxNxfX1EHVUnBkXZjCCIfrmGzi2rhOlamkMRMgW7ih3Rh8FaNSYMhVi_JnV8RDxB9udmQKAqHnYPkBBSpDcdgnlTkTA4_tIeiamh8VpwyTkpCqNfZJDm8iWrTmWwMO13tEpM6DrBMWBp_fy7EjSyu2b_OX3CPXViF6O8bKi7bs5rVy-FnhX0E6khemTEq_kk2ubS0qTgc_W4rNgWDs1My8UzfyQPHo-Er9TtTNO46VheY5DjIL7faFQnZ1FTKDq7nol2-Bu1c_CDx402g2bxh3WHzqFUW-JaTFAueZH2Toi20-aN-4tAt3f6eZ7R9U9e7MU';
 const phoneNumber = '+375295738689';
 
 const identityToolkit = google.identitytoolkit({
-  auth: 'GC_API_KEY',
+  auth: 'GC_KEY',
   version: 'v3',
 });
 

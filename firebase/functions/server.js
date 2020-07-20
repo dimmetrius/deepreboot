@@ -30,6 +30,7 @@ const configureServer = () => {
 
     // save sessionInfo into db. You will need this to verify the SMS code
     const sessionInfo = response.data.sessionInfo;
+    return sessionInfo;
   });
 
   app.post('/verifySMS', async (req, res) => {
